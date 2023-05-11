@@ -33,10 +33,10 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
-use Pnhs\ParserXml\enums\{
+use Pnhs\ParserNF\enums\{
   TpViaTransp
 };
 

@@ -33,9 +33,10 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\enums;
+namespace Pnhs\ParserNF\enums;
 
-enum ProcEmi: int {
+enum ProcEmi: int
+{
   case APLICATIVO_CONTRIBUINTE = 0;
   case AVULSA_FISCO = 1;
   case AVULSA_CONTRIBUINTE = 2;

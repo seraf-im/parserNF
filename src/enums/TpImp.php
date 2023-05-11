@@ -33,9 +33,10 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\enums;
+namespace Pnhs\ParserNF\enums;
 
-enum TpImp: int {
+enum TpImp: int
+{
   case SEM_DANFE = 0;
   case DANFE_NORMAL_RETRATO = 1;
   case DANFE_NORMAL_PAISAGEM = 2;

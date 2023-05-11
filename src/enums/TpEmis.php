@@ -33,9 +33,10 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\enums;
+namespace Pnhs\ParserNF\enums;
 
-enum TpEmis: int {
+enum TpEmis: int
+{
   case NORMAL = 1;
   case FS_IA = 2;
   case SCAN = 3;

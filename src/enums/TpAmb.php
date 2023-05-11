@@ -33,9 +33,10 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\enums;
+namespace Pnhs\ParserNF\enums;
 
-enum TpAmb: int {
+enum TpAmb: int
+{
   case PRODUCAO = 1;
   case HOMOLOGACAO = 2;
 };

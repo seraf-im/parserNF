@@ -33,9 +33,10 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\enums;
+namespace Pnhs\ParserNF\enums;
 
-enum CRT: int {
+enum CRT: int
+{
   case SIMPLES_NACIONAL = 1;
   case SIMPLES_NACIONAL_EXCESSO = 2;
   case REGIME_NORMAL = 3;

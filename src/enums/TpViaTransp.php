@@ -33,9 +33,10 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\enums;
+namespace Pnhs\ParserNF\enums;
 
-enum TpViaTransp: int {
+enum TpViaTransp: int
+{
   case MARITIMA = 1;
   case FLUVIAL = 2;
   case LACUSTRE = 3;

@@ -33,9 +33,10 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\enums;
+namespace Pnhs\ParserNF\enums;
 
-enum Mod: string {
+enum Mod: string
+{
   case MODELO_01 = '01';
   case MODELO_02 = '02';
   case CUPOM_FISCAL_REGISTRADORA = '2B';

@@ -33,9 +33,10 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\enums;
+namespace Pnhs\ParserNF\enums;
 
-enum IdDest: int {
+enum IdDest: int
+{
   case OPERACAO_INTERNA = 1;
   case OPERACAO_INTERESTADUAL = 2;
   case OPERACAO_COM_EXTERIOR = 3;

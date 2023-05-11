@@ -33,9 +33,10 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\enums;
+namespace Pnhs\ParserNF\enums;
 
-enum TpIntermedio: int {
+enum TpIntermedio: int
+{
   case PROPRIA = 1;
   case CONTA_E_ORDEM = 2;
   case ENCOMENDA = 3;

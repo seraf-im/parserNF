@@ -33,9 +33,10 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\enums;
+namespace Pnhs\ParserNF\enums;
 
-enum IndFinal: int {
+enum IndFinal: int
+{
   case NORMAL = 0;
   case CONSUMIDOR_FINAL = 1;
 };
