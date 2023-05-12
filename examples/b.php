@@ -33,20 +33,29 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\layout;
+ini_set("display_errors", "On");
+ini_set("display_startup_erros", "On");
+error_reporting(E_ALL);
 
-use Exception;
+use Pnhs\ParserNF\layout\b;
+use Pnhs\ParserNF\Parser;
 
-class layout
-{
-  public static function tag(mixed $value, string $message, int $code, int $min, int $max = null)
-  {
-    if ($min > 0 && empty($value)) {
-      throw new Exception($message, $code);
-      return null;
-    }
+require "../autoload.php";
 
-    if (is_string($value))
-      return $value;
-  }
+try {
+  if (!file_exists("nota_fiscal.xml")) die("Arquivo nota_fiscal.xml não existe");
+  $xml = file_get_contents("nota_fiscal.xml");
+
+  $parser = new parser($xml);
+  $p = $parser->read();
+
+  $group_b = b::run($p);
+
+  if (is_null($group_b)) die('Nota Fiscal Inválida');
+
+  echo '<pre>';
+  print_r($group_b);
+  echo '</pre>';
+} catch (Exception $e) {
+  die("<b>Erro:</b> " . $e->getMessage() . ",<br /><b>Código:</b> " . $e->getCode());
 }
