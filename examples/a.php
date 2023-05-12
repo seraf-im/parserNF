@@ -33,21 +33,29 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\layout;
+ini_set("display_errors", "On");
+ini_set("display_startup_erros", "On");
+error_reporting(E_ALL);
 
-use stdClass;
+use Pnhs\ParserNF\layout\a;
+use Pnhs\ParserNF\Parser;
 
-class a extends layout
-{
-  public static function run(object|bool $data): null|stdClass
-  {
-    if (!$data) return null;
-    $parser = $data->NFe->infNFe->attributes();
-    $std = new stdClass;
+require "../autoload.php";
 
-    $std->Id = self::tag((string)$parser['Id'], 'Identificador da TAG a ser assinada não informado', 0, 1, 1);
-    $std->versao = self::tag((string)$parser['versao'], 'Versão não informado', 0, 1, 1);
+try {
+  if (!file_exists("nota_fiscal.xml")) die("Arquivo nota_fiscal.xml não existe");
+  $xml = file_get_contents("nota_fiscal.xml");
 
-    return $std;
-  }
+  $parser = new parser($xml);
+  $p = $parser->read();
+
+  $group_a = a::run($p);
+
+  if (is_null($group_a)) die('Nota Fiscal Inválida');
+
+  echo '<pre>';
+  print_r($group_a);
+  echo '</pre>';
+} catch (Exception $e) {
+  die("<b>Erro:</b> " . $e->getMessage() . ",<br /><b>Código:</b> " . $e->getCode());
 }

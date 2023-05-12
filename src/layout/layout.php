@@ -35,19 +35,18 @@ declare(strict_types=1);
 
 namespace Pnhs\ParserNF\layout;
 
-use stdClass;
+use Exception;
 
-class a extends layout
+final class layout
 {
-  public static function run(object|bool $data): null|stdClass
+  public static function tag(mixed $value, string $message, int $code, int $min, int $max = null)
   {
-    if (!$data) return null;
-    $parser = $data->NFe->infNFe->attributes();
-    $std = new stdClass;
+    if ($min > 0 && empty($value)) {
+      throw new Exception($message, $code);
+      return null;
+    }
 
-    $std->Id = self::tag((string)$parser['Id'], 'Identificador da TAG a ser assinada não informado', 0, 1, 1);
-    $std->versao = self::tag((string)$parser['versao'], 'Versão não informado', 0, 1, 1);
-
-    return $std;
+    if (is_string($value))
+      return $value;
   }
 }
