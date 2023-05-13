@@ -33,23 +33,35 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\layout;
+ini_set("display_errors", "On");
+ini_set("display_startup_erros", "On");
+error_reporting(E_ALL);
+ini_set("max_execution_time", 5);
 
-use stdClass;
+use Pnhs\ParserNF\layout\h;
+use Pnhs\ParserNF\layout\k;
+use Pnhs\ParserNF\Parser;
 
-class k extends layout
-{
-  public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
-  {
-    $parser = $data->NFe->infNFe->det->prod[$numero_item - 1]?->med;
+require "../autoload.php";
 
-    if (!$parser)
-      return $std;
+try {
+  if (!file_exists("nota_fiscal.xml")) die("Arquivo nota_fiscal.xml não existe");
+  $xml = file_get_contents("nota_fiscal.xml");
 
-    $std->cProdANVISA      = self::tag((string) $parser->cProdANVISA, 'cProdANVISA não informado', 'K01a', 1);
-    $std->xMotivoIsencao   = self::tag((string) $parser->xMotivoIsencao, 'xMotivoIsencao não informado', 'K01b', 0);
-    $std->vPMC             = self::tag((string) $parser->vPMC, 'vPMC não informado', 'K06', 1);
+  $parser = new parser($xml);
+  $p = $parser->read();
 
-    return $std;
+  $group_h = h::run($p);
+
+  if (is_null($group_h)) die('Nota Fiscal Inválida');
+
+  foreach ($group_h as $item) {
+    $group_k[] = (k::run($p, $item->nItem, $item));
   }
+
+  echo '<p class="display-5">Grupo K</p><p class="h5">Detalhamento Específico de Medicamento e de Matérias-primas Farmacêuticas</p><pre>';
+  print_r($group_k);
+  echo '</pre>';
+} catch (Exception $e) {
+  die("<b>Erro:</b> " . $e->getMessage());
 }
