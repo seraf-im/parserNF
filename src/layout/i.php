@@ -37,40 +37,46 @@ namespace Pnhs\ParserNF\layout;
 
 use stdClass;
 
-class i
+class i extends layout
 {
-  public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
+  public static function run(object $data, int $nItem, $std = new stdClass): stdClass
   {
-    $parser = $data->xpath("//NFe//det[@nItem = {$numero_item}]//prod")[0];
+    $parser = $data->xpath("//NFe//det[@nItem = {$nItem}]//prod")[0];
 
-    $return = [];
-    $i = 0;
-
-    $std->codigo_produto                        = (string) $parser->cProd;
-    $std->codigo_barras_comercial               = (string) $parser->cEAN;
-    $std->descricao                             = (string) $parser->xProd;
-    $std->codigo_ncm                            = (string) $parser->NCM;
-    //NVE
-    $std->cest                                  = (string) $parser->CEST;
-    $std->escala_relevante                      = (string) $parser->indEscada;
-    $std->cnpj_fabricante                       = (string) $parser->CNPJFab;
-    $std->codigo_beneficio_fiscal               = (string) $parser->cBenef;
-    $std->codigo_ex_tipi                        = (string) $parser->EXTIPI;
-    $std->cfop                                  = (int) $parser->CFOP;
-    $std->unidade_comercial                     = (string) $parser->uCom;
-    $std->quantidade_comercial                  = (string) $parser->qCom;
-    $std->valor_unitario_comercial              = (string) $parser->vUnCom;
-    $std->valor_bruto                           = (string) $parser->vProd;
-    $std->codigo_barras_tributavel              = (string) $parser->cEANTrib;
-    $std->unidade_tributavel                    = (string) $parser->uTrib;
-    $std->quantidade_tributavel                 = (string) $parser->qTrib;
-    $std->valor_unitario_tributavel             = (string) $parser->vUnTrib;
-    $std->valor_frete                           = (string) $parser->vFrete;
-    $std->valor_seguro                          = (string) $parser->vSeg;
-    $std->valor_desconto                        = (string) $parser->vDesc;
-    $std->valor_outras_despesas                 = (string) $parser->vOutro;
-    $std->inclui_no_total                       = (string) $parser->indTot;
+    $std->cProd     = self::tag((string) $parser->cProd, 'cProd não informado', 'I02', 1);
+    $std->cEAN      = self::tag((string) $parser->cEAN, 'cEAN não informado', 'I03', 1);
+    $std->xProd     = self::tag((string) $parser->xProd, 'xProd não informado', 'I04', 1);
+    $std->NCM       = self::tag((string) $parser->NCM, 'NCM não informado', 'I05', 1);
+    self::nve($parser->NVE, $std);
+    $std->CEST      = self::tag((string) $parser->CEST, 'CEST não informado', 'I05c', 0);
+    $std->indEscada = self::tag((string) $parser->indEscada, 'indEscada não informado', 'I05d', 0);
+    $std->CNPJFab   = self::tag((string) $parser->CNPJFab, 'CNPJFab não informado', 'I05e', 0);
+    $std->cBenef    = self::tag((string) $parser->cBenef, 'cBenef não informado', 'I05f', 0);
+    $std->EXTIPI    = self::tag((string) $parser->EXTIPI, 'EXTIPI não informado', 'I06', 0);
+    $std->CFOP      = self::tag((string) $parser->CFOP, 'CFOP não informado', 'I08', 1);
+    $std->uCom      = self::tag((string) $parser->uCom, 'uCom não informado', 'I09', 1);
+    $std->qCom      = self::tag((string) $parser->qCom, 'qCom não informado', 'I10', 1);
+    $std->vUnCom    = self::tag((string) $parser->vUnCom, 'vUnCom não informado', 'I10a', 1);
+    $std->vProd     = self::tag((string) $parser->vProd, 'vProd não informado', 'I11', 1);
+    $std->cEANTrib  = self::tag((string) $parser->cEANTrib, 'cEANTrib não informado', 'I12', 1);
+    $std->uTrib     = self::tag((string) $parser->uTrib, 'uTrib não informado', 'I13', 1);
+    $std->qTrib     = self::tag((string) $parser->qTrib, 'qTrib não informado', 'I14', 1);
+    $std->vUnTrib   = self::tag((string) $parser->vUnTrib, 'vUnTrib não informado', 'I14a', 1);
+    $std->vFrete    = self::tag((string) $parser->vFrete, 'vFrete não informado', 'I15', 0);
+    $std->vSeg      = self::tag((string) $parser->vSeg, 'vSeg não informado', 'I16', 0);
+    $std->vDesc     = self::tag((string) $parser->vDesc, 'vDesc não informado', 'I17', 0);
+    $std->vOutro    = self::tag((string) $parser->vOutro, 'vOutro não informado', 'I17a', 0);
+    $std->indTot    = self::tag((string) $parser->indTot, 'indTot não informado', 'I17b', 1);
 
     return $std;
+  }
+
+  private static function nve(object $parser, stdClass $std): void
+  {
+    $i = 0;
+    foreach ($parser as $item) {
+      $std->NVE[$i] = self::tag((string) $item, "NVE[$i] não informado", 'I05a', 1);
+      $i++;
+    }
   }
 }
