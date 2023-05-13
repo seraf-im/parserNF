@@ -50,7 +50,7 @@ class layout
       return $value;
 
     if (is_object($value) && count($value) > $max) {
-      throw new Exception($message, $code);
+      throw new Exception("$code - $message");
       return null;
     }
   }

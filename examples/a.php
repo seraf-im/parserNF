@@ -57,5 +57,5 @@ try {
   print_r($group_a);
   echo '</pre>';
 } catch (Exception $e) {
-  die("<b>Erro:</b> " . $e->getMessage() . ",<br /><b>Código:</b> " . $e->getCode());
+  die("<b>Erro:</b> " . $e->getMessage());
 }

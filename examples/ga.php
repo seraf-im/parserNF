@@ -37,7 +37,7 @@ ini_set("display_errors", "On");
 ini_set("display_startup_erros", "On");
 error_reporting(E_ALL);
 
-use Pnhs\ParserNF\layout\e;
+use Pnhs\ParserNF\layout\ga;
 use Pnhs\ParserNF\Parser;
 
 require "../autoload.php";
@@ -49,12 +49,12 @@ try {
   $parser = new parser($xml);
   $p = $parser->read();
 
-  $group_e = e::run($p);
+  $group_ga = ga::run($p);
 
-  if (is_null($group_e)) die('Nota Fiscal Inválida');
+  if (is_null($group_ga)) die('Nota Fiscal Inválida');
 
-  echo '<p class="display-5">Grupo E</p><p class="h5">Identificação do Destinatário da Nota Fiscal eletrônica</p><pre>';
-  print_r($group_e);
+  echo '<p class="display-5">Grupo GA</p><p class="h5">Autorização para obter XML</p><pre>';
+  print_r($group_ga);
   echo '</pre>';
 } catch (Exception $e) {
   die("<b>Erro:</b> " . $e->getMessage());
