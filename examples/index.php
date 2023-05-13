@@ -1,5 +1,5 @@
 <?php
-$groups = ['A', 'B', 'BA', 'C', 'D', 'E', 'F', 'G', 'GA'];
+$groups = ['A', 'B', 'BA', 'C', 'D', 'E', 'F', 'G', 'GA', 'H'];
 ?>
 
 <!DOCTYPE html>

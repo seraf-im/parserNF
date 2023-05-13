@@ -33,29 +33,29 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\layout;
+ini_set("display_errors", "On");
+ini_set("display_startup_erros", "On");
+error_reporting(E_ALL);
 
-use stdClass;
+use Pnhs\ParserNF\layout\h;
+use Pnhs\ParserNF\Parser;
 
-class h extends layout
-{
-  public static function run($data): array
-  {
-    $parser = $data->NFe->infNFe->det;
-    $return = [];
-    $i = 0;
+require "../autoload.php";
 
-    if (!$parser)
-      return [];
+try {
+  if (!file_exists("nota_fiscal.xml")) die("Arquivo nota_fiscal.xml não existe");
+  $xml = file_get_contents("nota_fiscal.xml");
 
-    foreach ($parser as $item) {
-      $std = new stdClass;
-      $std->nItem = (int) self::tag((string) $item->attributes()['nItem'], 'nItem não informado', 'H01', 1);
+  $parser = new parser($xml);
+  $p = $parser->read();
 
-      $return[$i] = $std;
-      $i++;
-    }
+  $group_h = h::run($p);
 
-    return $return;
-  }
+  if (is_null($group_h)) die('Nota Fiscal Inválida');
+
+  echo '<p class="display-5">Grupo H</p><p class="h5">Detalhamento de Produtos e Serviços da NF-e</p><pre>';
+  print_r($group_h);
+  echo '</pre>';
+} catch (Exception $e) {
+  die("<b>Erro:</b> " . $e->getMessage());
 }
