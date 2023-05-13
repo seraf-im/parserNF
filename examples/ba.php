@@ -33,72 +33,29 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\layout;
+ini_set("display_errors", "On");
+ini_set("display_startup_erros", "On");
+error_reporting(E_ALL);
 
-use stdClass;
-use Pnhs\ParserNF\enums\{
-  Uf,
-  Mod
-};
+use Pnhs\ParserNF\layout\ba;
+use Pnhs\ParserNF\Parser;
 
-class ba extends layout
-{
-  public static function run($data): array
-  {
-    if (!$data) return null;
-    $parser = $data->NFe->infNFe->ide->NFref;
-    $return = [];
-    $i = 0;
+require "../autoload.php";
 
-    if (!$data->NFe->infNFe->ide->NFref)
-      return [];
+try {
+  if (!file_exists("nota_fiscal.xml")) die("Arquivo nota_fiscal.xml não existe");
+  $xml = file_get_contents("nota_fiscal.xml");
 
-    self::tag($parser, 'Ultrapassou o máximo de referências permitidas', 'BA01', 0, 500);
+  $parser = new parser($xml);
+  $p = $parser->read();
 
-    foreach ($parser as $item) {
-      $std = new stdClass;
-      if ($item->refNFe) $std->refNFe  = (string) $item->refNFe;
-      if ($item->refCTe) $std->refCTe  = (string) $item->refCTe;
-      if ($item->refNF)
-        self::refNF($item->refNF, $std);
-      if ($item->refNFP)
-        self::refNFP($item->refNFP, $std);
-      if ($item->refECF)
-        self::refECF($item->refECF, $std);
+  $group_ba = ba::run($p);
 
-      $return[$i] = $std;
-      $i++;
-    }
+  if (is_null($group_ba)) die('Nota Fiscal Inválida');
 
-    return $return;
-  }
-
-  private static function refNF(object $parser, stdClass $std): void
-  {
-    $std->cUF     = Uf::from((int) self::tag((string)$parser->cUF, 'cUF não informado', 'BA04', 1));
-    $std->AAMM    = self::tag((string) $parser->AAMM, 'AAMM não informado', 'BA05', 1);
-    $std->CNPJ    = self::tag((string) $parser->CNPJ, 'CNPJ não informado', 'BA06', 1);
-    $std->mod     = Mod::from((string) self::tag((string) $parser->mod, 'mod não informado', 'BA07', 1));
-    $std->serie   = self::tag((string) $parser->serie, 'serie não informado', 'BA08', 1);
-    $std->nNF     = self::tag((string) $parser->nNF, 'nNF não informado', 'BA09', 1);
-  }
-
-  private static function refNFP(object $parser, stdClass $std): void
-  {
-    $std->cUF     = Uf::from((int) self::tag((string)$parser->cUF, 'cUF não informado', 'BA11', 1));
-    $std->AAMM    = self::tag((string) $parser->AAMM, 'AAMM não informado', 'BA12', 1);
-    $std->CNPJ    = self::tag((string) $parser->CNPJ, 'CNPJ não informado', 'BA13', 1);
-    $std->CPF     = self::tag((string) $parser->CPF, 'CPF não informado', 'BA14', 1);
-    $std->IE      = self::tag((string) $parser->IE, 'IE não informado', 'BA15', 1);
-    $std->mod     = Mod::from((string) self::tag((string) $parser->mod, 'mod não informado', 'BA16', 1));
-    $std->serie   = self::tag((string) $parser->serie, 'serie não informado', 'BA17', 1);
-    $std->nNF     = self::tag((string) $parser->nNF, 'nNF não informado', 'BA18', 1);
-  }
-
-  private static function refECF(object $parser, stdClass $std): void
-  {
-    $std->mod     = Mod::from((string) self::tag((string) $parser->mod, 'mod não informado', 'BA21', 1));
-    $std->nECF    = self::tag((string) $parser->nECF, 'nECF não informado', 'BA22', 1);
-    $std->nCOO    = self::tag((string) $parser->nCOO, 'nCOO não informado', 'BA23', 1);
-  }
+  echo '<p class="display-5">Grupo BA</p><p class="h5">Documento Fiscal Referenciado</p><pre>';
+  print_r($group_ba);
+  echo '</pre>';
+} catch (Exception $e) {
+  die("<b>Erro:</b> " . $e->getMessage());
 }

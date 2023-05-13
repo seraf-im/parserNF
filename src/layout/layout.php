@@ -39,14 +39,19 @@ use Exception;
 
 class layout
 {
-  public static function tag(mixed $value, string $message, int $code, int $min, int $max = null)
+  public static function tag(mixed $value, string $message, string $code, int $min, int $max = null)
   {
-    if ($min > 0 && empty($value)) {
-      throw new Exception($message, $code);
+    if ($min > 0 && empty($value) && "0" !== $value) {
+      throw new Exception("$code - $message");
       return null;
     }
 
     if (is_string($value))
       return $value;
+
+    if (is_object($value) && count($value) > $max) {
+      throw new Exception($message, $code);
+      return null;
+    }
   }
 }
