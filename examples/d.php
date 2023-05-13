@@ -33,32 +33,29 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\layout;
+ini_set("display_errors", "On");
+ini_set("display_startup_erros", "On");
+error_reporting(E_ALL);
 
-use stdClass;
+use Pnhs\ParserNF\layout\d;
+use Pnhs\ParserNF\Parser;
 
-class d extends layout
-{
-  public static function run($data): stdClass
-  {
-    $parser = $data->NFe->infNFe->avulsa;
-    $std = new stdClass;
+require "../autoload.php";
 
-    if (!$data->NFe->infNFe->avulsa)
-      return $std;
+try {
+  if (!file_exists("nota_fiscal.xml")) die("Arquivo nota_fiscal.xml não existe");
+  $xml = file_get_contents("nota_fiscal.xml");
 
-    $std->CNPJ    = self::tag((string) $parser->CNPJ, 'CNPJ não informado', 'D02', 1);
-    $std->xOrgao  = self::tag((string) $parser->xOrgao, 'xOrgao não informado', 'D03', 1);
-    $std->matr    = self::tag((string) $parser->matr, 'matr não informado', 'D04', 1);
-    $std->xAgente = self::tag((string) $parser->xAgente, 'xAgente não informado', 'D05', 1);
-    $std->fone    = self::tag((string) $parser->fone, 'fone não informado', 'D06', 0);
-    $std->UF      = self::tag((string) $parser->UF, 'UF não informado', 'D07', 1);
-    $std->nDAR    = self::tag((string) $parser->nDAR, 'nDAR não informado', 'D08', 0);
-    $std->dEmi    = self::tag((string) $parser->dEmi, 'dEmi não informado', 'D09', 0);
-    $std->vDAR    = self::tag((string) $parser->vDAR, 'vDAR não informado', 'D10', 0);
-    $std->repEmi  = self::tag((string) $parser->repEmi, 'repEmi não informado', 'D11', 1);
-    $std->dPag    = self::tag((string) $parser->dPag, 'dPag não informado', 'D12', 0);
+  $parser = new parser($xml);
+  $p = $parser->read();
 
-    return $std;
-  }
+  $group_d = d::run($p);
+
+  if (is_null($group_d)) die('Nota Fiscal Inválida');
+
+  echo '<p class="display-5">Grupo D</p><p class="h5">Identificação do Fisco Emitente da NF-e</p><pre>';
+  print_r($group_d);
+  echo '</pre>';
+} catch (Exception $e) {
+  die("<b>Erro:</b> " . $e->getMessage() . ",<br /><b>Código:</b> " . $e->getCode());
 }
