@@ -33,33 +33,35 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\layout;
+ini_set("display_errors", "On");
+ini_set("display_startup_erros", "On");
+error_reporting(E_ALL);
+ini_set("max_execution_time", 5);
 
-use stdClass;
+use Pnhs\ParserNF\layout\h;
+use Pnhs\ParserNF\layout\j;
+use Pnhs\ParserNF\Parser;
 
-class i80 extends layout
-{
-  public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
-  {
-    $parser = $data->NFe->infNFe->det->prod[$numero_item - 1]?->rastro;
+require "../autoload.php";
 
-    if (!$parser)
-      return $std;
+try {
+  if (!file_exists("nota_fiscal.xml")) die("Arquivo nota_fiscal.xml não existe");
+  $xml = file_get_contents("nota_fiscal.xml");
 
-    self::tag($parser, 'No máximo 500 rastros', 'I80', 0, 500);
+  $parser = new parser($xml);
+  $p = $parser->read();
 
-    $i = 0;
-    foreach ($parser as $item) {
-      $r['nLote']            = self::tag((string) $item->nLote, 'nLote não informado', 'I81', 1);
-      $r['qLote']            = self::tag((string) $item->qLote, 'qLote não informado', 'I82', 1);
-      $r['dFab']             = self::tag((string) $item->dFab, 'dFab não informado', 'I83', 1);
-      $r['dVal']             = self::tag((string) $item->dVal, 'dVal não informado', 'I84', 1);
-      $r['cAgreg']           = self::tag((string) $item->cAgreg, 'cAgreg não informado', 'I85', 0);
+  $group_h = h::run($p);
 
-      $std->$i = $r;
-      $i++;
-    }
+  if (is_null($group_h)) die('Nota Fiscal Inválida');
 
-    return $std;
+  foreach ($group_h as $item) {
+    $group_j[] = (j::run($p, $item->nItem, $item));
   }
+
+  echo '<p class="display-5">Grupo J</p><p class="h5">Detalhamento Específico de Veículos Novos</p><pre>';
+  print_r($group_j);
+  echo '</pre>';
+} catch (Exception $e) {
+  die("<b>Erro:</b> " . $e->getMessage());
 }

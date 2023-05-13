@@ -35,33 +35,24 @@ declare(strict_types=1);
 
 namespace Pnhs\ParserNF\enums;
 
-enum CodigoUf: int
+enum VeicProdTpComb: string
 {
-  case AC = 12;
-  case AL = 27;
-  case AP = 16;
-  case AM = 13;
-  case BA = 29;
-  case CE = 23;
-  case DF = 53;
-  case ES = 32;
-  case GO = 52;
-  case MA = 21;
-  case MT = 51;
-  case MS = 50;
-  case MG = 31;
-  case PA = 15;
-  case PB = 25;
-  case PR = 41;
-  case PE = 26;
-  case PI = 22;
-  case RJ = 33;
-  case RN = 24;
-  case RS = 43;
-  case RO = 11;
-  case RR = 14;
-  case SC = 42;
-  case SP = 35;
-  case SE = 28;
-  case TO = 17;
-};
+  case ALCOOL = "01";
+  case GASOLINA = "02";
+  case DIESEL = "03";
+  case GASOGENIO = "04";
+  case GAS_METANO = "05";
+  case ELETRICO_FONTE_INTERNA = "06";
+  case ELETRICO_FONTE_EXTERNA = "07";
+  case GASOLINA_GAS_NATURAL_COMBUSTIVEL = "08";
+  case ALCOOL_GAS_NATURAL_COMBUSTIVEL = "09";
+  case DIESEL_GAS_NATURAL_COMBUSTIVEL = "10";
+  case VIDE_CAMPO_OBSERVACAO = "11";
+  case ALCOOL_GAS_NATURAL_VEICULAR = "12";
+  case GASOLINA_GAS_NATURAL_VEICULAR = "13";
+  case DIESEL_GAS_NATURAL_VEICULAR = "14";
+  case GAS_NATURAL_VEICULAR = "15";
+  case ALCOOL_GASOLINA = "16";
+  case GASOLINA_ALCOOL_GAS_NATURAL_VEICULAR = "17";
+  case GASOLINA_ELETRICO = "18";
+}

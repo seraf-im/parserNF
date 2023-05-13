@@ -33,33 +33,28 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\layout;
+namespace Pnhs\ParserNF\enums;
 
-use stdClass;
-
-class i80 extends layout
+enum VeicProdTpVeic: string
 {
-  public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
-  {
-    $parser = $data->NFe->infNFe->det->prod[$numero_item - 1]?->rastro;
-
-    if (!$parser)
-      return $std;
-
-    self::tag($parser, 'No máximo 500 rastros', 'I80', 0, 500);
-
-    $i = 0;
-    foreach ($parser as $item) {
-      $r['nLote']            = self::tag((string) $item->nLote, 'nLote não informado', 'I81', 1);
-      $r['qLote']            = self::tag((string) $item->qLote, 'qLote não informado', 'I82', 1);
-      $r['dFab']             = self::tag((string) $item->dFab, 'dFab não informado', 'I83', 1);
-      $r['dVal']             = self::tag((string) $item->dVal, 'dVal não informado', 'I84', 1);
-      $r['cAgreg']           = self::tag((string) $item->cAgreg, 'cAgreg não informado', 'I85', 0);
-
-      $std->$i = $r;
-      $i++;
-    }
-
-    return $std;
-  }
-}
+  case CICLOMOTOR = "02";
+  case MOTONETA = "03";
+  case MOTOCICLETA = "04";
+  case TRICICLO = "05";
+  case AUTOMOVEL = "06";
+  case MICRO_ONIBUS = "07";
+  case ONIBUS = "08";
+  case REBOQUE = "10";
+  case SEMIRREBOQUE = "11";
+  case CAMIONETA = "13";
+  case CAMINHAO = "14";
+  case CAMINHAO_TRATOR = "17";
+  case TR_RODAS = "18";
+  case TR_ESTEIRAS = "19";
+  case TR_MISTO = "20";
+  case QUADRICICLO = "21";
+  case CHASSI_PLATAFORMA = "22";
+  case CAMINHONETE = "23";
+  case UTILITARIO = "25";
+  case MOTOR_CASA = "26";
+};

@@ -33,33 +33,14 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\layout;
+namespace Pnhs\ParserNF\enums;
 
-use stdClass;
-
-class i80 extends layout
+enum VeicProdEspVeic: int
 {
-  public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
-  {
-    $parser = $data->NFe->infNFe->det->prod[$numero_item - 1]?->rastro;
-
-    if (!$parser)
-      return $std;
-
-    self::tag($parser, 'No máximo 500 rastros', 'I80', 0, 500);
-
-    $i = 0;
-    foreach ($parser as $item) {
-      $r['nLote']            = self::tag((string) $item->nLote, 'nLote não informado', 'I81', 1);
-      $r['qLote']            = self::tag((string) $item->qLote, 'qLote não informado', 'I82', 1);
-      $r['dFab']             = self::tag((string) $item->dFab, 'dFab não informado', 'I83', 1);
-      $r['dVal']             = self::tag((string) $item->dVal, 'dVal não informado', 'I84', 1);
-      $r['cAgreg']           = self::tag((string) $item->cAgreg, 'cAgreg não informado', 'I85', 0);
-
-      $std->$i = $r;
-      $i++;
-    }
-
-    return $std;
-  }
-}
+  case PASSAGEIRO = 1;
+  case CARGA = 2;
+  case MISTO = 3;
+  case CORRIDA = 4;
+  case TRACAO = 5;
+  case ESPECIAL = 6;
+};
