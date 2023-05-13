@@ -39,7 +39,7 @@ error_reporting(E_ALL);
 ini_set("max_execution_time", 5);
 
 use Pnhs\ParserNF\layout\h;
-use Pnhs\ParserNF\layout\i05;
+use Pnhs\ParserNF\layout\i07;
 use Pnhs\ParserNF\Parser;
 
 require "../autoload.php";
@@ -56,11 +56,11 @@ try {
   if (is_null($group_h)) die('Nota Fiscal Inválida');
 
   foreach ($group_h as $item) {
-    $group_i05[] = (i05::run($p, $item->nItem, $item));
+    $group_i07[] = (i07::run($p, $item->nItem, $item));
   }
 
-  echo '<p class="display-5">Grupo I05</p><p class="h5">Produtos e Serviços / Pedido de Compra</p><pre>';
-  print_r($group_i05);
+  echo '<p class="display-5">Grupo I07</p><p class="h5">Produtos e Serviços / Grupo Diversos</p><pre>';
+  print_r($group_i07);
   echo '</pre>';
 } catch (Exception $e) {
   die("<b>Erro:</b> " . $e->getMessage());
