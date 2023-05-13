@@ -33,38 +33,35 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\layout;
+ini_set("display_errors", "On");
+ini_set("display_startup_erros", "On");
+error_reporting(E_ALL);
+ini_set("max_execution_time", 5);
 
-use stdClass;
+use Pnhs\ParserNF\layout\h;
+use Pnhs\ParserNF\layout\i03;
+use Pnhs\ParserNF\Parser;
 
-class i03
-{
-  public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
-  {
-    $parser = $data->NFe->infNFe->det->prod[$numero_item - 1];
-    $return = [];
-    $i = 0;
+require "../autoload.php";
 
-    // $std->numero_documento_importacao           = (string) $parser->nDI;
-    // $std->data_documento_importacao             = (string) $parser->dDI;
-    // $std->local_desembaraco                     = (string) $parser->xLocDesemb;
-    // $std->uf_desembaraco                        = (string) $parser->UFDesemb;
-    // $std->data_desembaraco                      = (string) $parser->dDesemb;
-    // $std->via_transporte                        = (string) $parser->tpViaTransp;
-    // $std->valor_afrmm                           = (string) $parser->vAFRMM;
-    // $std->tipo_importacao                       = (string) $parser->tpIntermedio;
-    // $std->cnpj_intermedio                       = (string) $parser->CNPJ;
-    // $std->uf_intermedio                         = (string) $parser->UFTerceiro;
-    // $std->codigo_exportador                     = (string) $parser->cExportador;
+try {
+  if (!file_exists("nota_fiscal.xml")) die("Arquivo nota_fiscal.xml não existe");
+  $xml = file_get_contents("nota_fiscal.xml");
 
-    // if ($parser->adi)
-    //   self::detExport($parser->adi, $std);
+  $parser = new parser($xml);
+  $p = $parser->read();
 
-    return $std;
+  $group_h = h::run($p);
+
+  if (is_null($group_h)) die('Nota Fiscal Inválida');
+
+  foreach ($group_h as $item) {
+    $group_i03[] = (i03::run($p, $item->nItem, $item));
   }
 
-  private static function detExport(object $parser, stdClass $std): void
-  {
-    // $std->numero_drawback_exportacao            = (string) $parser->nDraw;
-  }
+  echo '<p class="display-5">Grupo I03</p><p class="h5">Produtos e Serviços / Grupo de Exportação</p><pre>';
+  print_r($group_i03);
+  echo '</pre>';
+} catch (Exception $e) {
+  die("<b>Erro:</b> " . $e->getMessage());
 }
