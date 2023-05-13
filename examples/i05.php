@@ -33,22 +33,35 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\layout;
+ini_set("display_errors", "On");
+ini_set("display_startup_erros", "On");
+error_reporting(E_ALL);
+ini_set("max_execution_time", 5);
 
-use stdClass;
-use Pnhs\ParserNF\enums\{
-  TpViaTransp
-};
+use Pnhs\ParserNF\layout\h;
+use Pnhs\ParserNF\layout\i05;
+use Pnhs\ParserNF\Parser;
 
-class i05 extends layout
-{
-  public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
-  {
-    $parser = $data->NFe->infNFe->det->prod[$numero_item - 1];
+require "../autoload.php";
 
-    $std->xPed             = self::tag((string) $parser?->xPed, 'xPed não informado', 'I60', 0);
-    $std->nItemPed         = self::tag((string) $parser?->nItemPed, 'nItemPed não informado', 'I61', 0);
+try {
+  if (!file_exists("nota_fiscal.xml")) die("Arquivo nota_fiscal.xml não existe");
+  $xml = file_get_contents("nota_fiscal.xml");
 
-    return $std;
+  $parser = new parser($xml);
+  $p = $parser->read();
+
+  $group_h = h::run($p);
+
+  if (is_null($group_h)) die('Nota Fiscal Inválida');
+
+  foreach ($group_h as $item) {
+    $group_i05[] = (i05::run($p, $item->nItem, $item));
   }
+
+  echo '<p class="display-5">Grupo I03</p><p class="h5">Produtos e Serviços / Pedido de Compra</p><pre>';
+  print_r($group_i05);
+  echo '</pre>';
+} catch (Exception $e) {
+  die("<b>Erro:</b> " . $e->getMessage());
 }
