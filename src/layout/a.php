@@ -45,8 +45,8 @@ class a extends layout
     $parser = $data->NFe->infNFe->attributes();
     $std = new stdClass;
 
-    $std->Id = self::tag((string)$parser['Id'], 'Identificador da TAG a ser assinada não informado', 0, 1, 1);
-    $std->versao = self::tag((string)$parser['versao'], 'Versão não informado', 0, 1, 1);
+    $std->versao = self::tag((string)$parser['versao'], 'Versão não informado', 'A02', 1, 1);
+    $std->Id = self::tag((string)$parser['Id'], 'Identificador da TAG a ser assinada não informado', 'A03', 1, 1);
 
     return $std;
   }

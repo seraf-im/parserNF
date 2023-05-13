@@ -53,7 +53,7 @@ try {
 
   if (is_null($group_b)) die('Nota Fiscal Inválida');
 
-  echo '<pre>';
+  echo '<p class="display-5">Grupo B</p><p class="h5">Identificação da Nota Fiscal eletrônica</p><pre>';
   print_r($group_b);
   echo '</pre>';
 } catch (Exception $e) {
