@@ -1,5 +1,5 @@
 <?php
-$groups = ['A', 'B', 'BA', 'C', 'D', 'E', 'F', 'G', 'GA', 'H', 'I', 'I01', 'I03', 'I05', 'I07', 'I80', 'J', 'K'];
+$groups = ['A', 'B', 'BA', 'C', 'D', 'E', 'F', 'G', 'GA', 'H', 'I', 'I01', 'I03', 'I05', 'I07', 'I80', 'J', 'K', 'L'];
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +51,7 @@ $groups = ['A', 'B', 'BA', 'C', 'D', 'E', 'F', 'G', 'GA', 'H', 'I', 'I01', 'I03'
         <span class="fs-4">ParserNF</span>
       </a>
       <hr>
-      <ul class="nav nav-pills flex-column mb-auto">
+      <ul class="nav nav-pills flex-column mb-auto" style="overflow: auto">
         <?php foreach ($groups as $group) {
           echo "<li class='nav-item'><a class='nav-link text-white' group='$group'>Grupo $group</a></li>";
         }
