@@ -301,21 +301,25 @@ class n extends layout
   {
     $parser = $parser->ICMSST;
 
-    $std->icms_origem                           = (int) $parser->orig;
-    $std->icms_situacao_tributaria              = (int) $parser->CST;
-    $std->icms_base_calculo_retido_remetente    = (string) $parser->vBCSTRet;
-    $std->icms_aliquota_final                   = (string) $parser->pST;
-    $std->icms_valor_substituto                 = (string) $parser->vICMSSubstituto;
-    $std->icms_valor_retido_st                  = (string) $parser->vICMSSTRet;
-    $std->fcp_base_calculo_retido_st            = (string) $parser->vBCFCPSTRet;
-    $std->fcp_percentual_retido_st              = (string) $parser->pFCPSTRet;
-    $std->fcp_valor_retido_st                   = (string) $parser->vFCPSTRet;
-    $std->icms_base_calculo_destino             = (string) $parser->vBCSTDest;
-    $std->icms_valor_destino                    = (string) $parser->vICMSSTDest;
-    $std->icms_reducao_base_calculo_efetiva     = (string) $parser->pRedBCEfet;
-    $std->icms_base_calculo_efetiva             = (string) $parser->vBCEfet;
-    $std->icms_aliquota_efetiva                 = (string) $parser->pICMSEfet;
-    $std->icms_valor_efetivo                    = (string) $parser->vICMSEfet;
+    $std->orig            = self::tag((string) $parser->orig, 'orig não informado', 'N11', 1);
+    $std->CST             = self::tag((string) $parser->CST, 'CST não informado', 'N12', 1);
+    $std->vBCSTRet        = self::tag((string) $parser->vBCSTRet, 'vBCSTRet não informado', 'N26', 1);
+    $std->pST             = self::tag((string) $parser->pST, 'pST não informado', 'N26a', 0);
+    $std->vICMSSubstituto = self::tag((string) $parser->vICMSSubstituto, 'vICMSSubstituto não informado', 'N26b', 0);
+    $std->vICMSSTRet      = self::tag((string) $parser->vICMSSTRet, 'vICMSSTRet não informado', 'N27', 1);
+    if ($parser->vBCFCPSTRet || $parser->pFCPSTRet || $parser->vFCPSTRet) {
+      $std->vBCFCPSTRet   = self::tag((string) $parser->vBCFCPSTRet, 'vBCFCPSTRet não informado', 'N27a', 1);
+      $std->pFCPSTRet     = self::tag((string) $parser->pFCPSTRet, 'pFCPSTRet não informado', 'N27b', 1);
+      $std->vFCPSTRet     = self::tag((string) $parser->vFCPSTRet, 'vFCPSTRet não informado', 'N27d', 1);
+    }
+    $std->vBCSTDest       = self::tag((string) $parser->vBCSTDest, 'vBCSTDest não informado', 'N31', 1);
+    $std->vICMSSTDest     = self::tag((string) $parser->vICMSSTDest, 'vICMSSTDest não informado', 'N32', 1);
+    if ($parser->pRedBCEfet || $parser->vBCEfet || $parser->pICMSEfet || $parser->vICMSEfet) {
+      $std->pRedBCEfet    = self::tag((string) $parser->pRedBCEfet, 'pRedBCEfet não informado', 'N34', 1);
+      $std->vBCEfet       = self::tag((string) $parser->vBCEfet, 'vBCEfet não informado', 'N35', 1);
+      $std->pICMSEfet     = self::tag((string) $parser->pICMSEfet, 'pICMSEfet não informado', 'N36', 1);
+      $std->vICMSEfet     = self::tag((string) $parser->vICMSEfet, 'vICMSEfet não informado', 'N37', 1);
+    }
   }
 
   private static function ICMSSN101($parser, $std): void
