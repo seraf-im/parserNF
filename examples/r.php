@@ -33,27 +33,35 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\layout;
+ini_set("display_errors", "On");
+ini_set("display_startup_erros", "On");
+error_reporting(E_ALL);
+ini_set("max_execution_time", 5);
 
-use stdClass;
+use Pnhs\ParserNF\layout\h;
+use Pnhs\ParserNF\layout\r;
+use Pnhs\ParserNF\Parser;
 
-class r extends layout
-{
-  public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
-  {
-    $parser = $data->NFe->infNFe->det[$numero_item - 1]->imposto->PISST;
+require "../autoload.php";
 
-    if (!$parser)
-      return $std;
+try {
+  if (!file_exists("nota_fiscal.xml")) die("Arquivo nota_fiscal.xml não existe");
+  $xml = file_get_contents("nota_fiscal.xml");
 
-    $std->vBC             = self::tag((string) $parser->vBC, 'vBC não informado', 'R02', 1);
-    $std->pPIS            = self::tag((string) $parser->pPIS, 'pPIS não informado', 'R03', 1);
-    if ($parser->qBCProd || $parser->vAliqProd || $parser->vPIS) {
-      $std->qBCProd       = self::tag((string) $parser->qBCProd, 'qBCProd não informado', 'R04', 1);
-      $std->vAliqProd     = self::tag((string) $parser->vAliqProd, 'vAliqProd não informado', 'R05', 1);
-      $std->vPIS          = self::tag((string) $parser->vPIS, 'vPIS não informado', 'R06', 1);
-    }
+  $parser = new parser($xml);
+  $p = $parser->read();
 
-    return $std;
+  $group_h = h::run($p);
+
+  if (is_null($group_h)) die('Nota Fiscal Inválida');
+
+  foreach ($group_h as $item) {
+    $group_r[] = (r::run($p, $item->nItem, $item));
   }
+
+  echo '<p class="display-5">Grupo R</p><p class="h5">PIS ST</p><pre>';
+  print_r($group_r);
+  echo '</pre>';
+} catch (Exception $e) {
+  die("<b>Erro:</b> " . $e->getMessage());
 }
