@@ -33,28 +33,35 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\layout;
+ini_set("display_errors", "On");
+ini_set("display_startup_erros", "On");
+error_reporting(E_ALL);
+ini_set("max_execution_time", 5);
 
-use stdClass;
+use Pnhs\ParserNF\layout\h;
+use Pnhs\ParserNF\layout\na;
+use Pnhs\ParserNF\Parser;
 
-class na extends layout
-{
-  public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
-  {
-    $parser = $data->NFe->infNFe->det[$numero_item - 1]->imposto->ICMSUFDest;
+require "../autoload.php";
 
-    if (!$parser)
-      return $std;
+try {
+  if (!file_exists("nota_fiscal.xml")) die("Arquivo nota_fiscal.xml não existe");
+  $xml = file_get_contents("nota_fiscal.xml");
 
-    $std->vBCUFDest       = self::tag((string) $parser->vBCUFDest, 'vBCUFDest não informado', 'N12', 1);
-    $std->vBCFCPUFDest    = self::tag((string) $parser->vBCFCPUFDest, 'vBCFCPUFDest não informado', 'N12', 1);
-    $std->pFCPUFDest      = self::tag((string) $parser->pFCPUFDest, 'pFCPUFDest não informado', 'N12', 0);
-    $std->pICMSInter      = self::tag((string) $parser->pICMSInter, 'pICMSInter não informado', 'N12', 1);
-    $std->pICMSInterPart  = self::tag((string) $parser->pICMSInterPart, 'pICMSInterPart não informado', 'N12', 1);
-    $std->vFCPUFDest      = self::tag((string) $parser->vFCPUFDest, 'vFCPUFDest não informado', 'N12', 0);
-    $std->vICMSUFDest     = self::tag((string) $parser->vICMSUFDest, 'vICMSUFDest não informado', 'N12', 1);
-    $std->vICMSUFDest     = self::tag((string) $parser->vICMSUFDest, 'vICMSUFDest não informado', 'N12', 1);
+  $parser = new parser($xml);
+  $p = $parser->read();
 
-    return $std;
+  $group_h = h::run($p);
+
+  if (is_null($group_h)) die('Nota Fiscal Inválida');
+
+  foreach ($group_h as $item) {
+    $group_na[] = (na::run($p, $item->nItem, $item));
   }
+
+  echo '<p class="display-5">Grupo NA</p><p class="h5">ICMS para a UF de destino</p><pre>';
+  print_r($group_na);
+  echo '</pre>';
+} catch (Exception $e) {
+  die("<b>Erro:</b> " . $e->getMessage());
 }
