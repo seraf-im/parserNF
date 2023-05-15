@@ -33,38 +33,22 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\layout;
+namespace Pnhs\ParserNF\enums;
 
-use Pnhs\ParserNF\enums\IpiCst;
-use stdClass;
-
-class o extends layout
+enum IpiCst: string
 {
-  public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
-  {
-    $parser = $data->NFe->infNFe->det[$numero_item - 1]->imposto->IPI;
-
-    if (!$parser)
-      return $std;
-
-    $std->CNPJProd        = self::tag((string) $parser->CNPJProd, 'CNPJProd não informado', 'O03', 0);
-    $std->cSelo           = self::tag((string) $parser->cSelo, 'cSelo não informado', 'O04', 0);
-    $std->qSelo           = self::tag((string) $parser->qSelo, 'qSelo não informado', 'O05', 0);
-    $std->cEnq            = self::tag((string) $parser->cEnq, 'cEnq não informado', 'O06', 1);
-    if ($parser->IPITrib)
-      $std->CST           = IpiCst::from(self::tag((string) $parser->IPITrib->CST, 'CST não informado', 'O09', 1));
-    if ($parser->vBC || $parser->pIPI) {
-      $std->vBC           = self::tag((string) $parser->vBC, 'vBC não informado', 'O10', 1);
-      $std->pIPI          = self::tag((string) $parser->pIPI, 'pIPI não informado', 'O13', 1);
-    }
-    if ($parser->qUnid || $parser->vUnid || $parser->vIPI) {
-      $std->qUnid         = self::tag((string) $parser->qUnid, 'qUnid não informado', 'O11', 1);
-      $std->vUnid         = self::tag((string) $parser->vUnid, 'vUnid não informado', 'O12', 1);
-      $std->vIPI          = self::tag((string) $parser->vIPI, 'vIPI não informado', 'O14', 1);
-    }
-    if ($parser->IPINT)
-      $std->CST           = IpiCst::from(self::tag((string) $parser->IPINT->CST, 'CST não informado', 'O09', 1));
-
-    return $std;
-  }
-}
+  case ENTRADA_RECUPERACAO_CREDITO = "00";
+  case ENTRADA_TRIBUTADA_ALIQUOTA_ZERO = "01";
+  case ENTRADA_ISENTA = "02";
+  case ENTRADA_NAO_TRIBUTADA = "03";
+  case ENTRADA_IMUNE = "04";
+  case ENTRADA_COM_SUSPENSAO = "05";
+  case OUTRAS_ENTRADAS = "49";
+  case SAIDA_TRIBUTADA = "50";
+  case SAIDA_TRIBUTADA_COM_ALIQUOTA_ZERO = "51";
+  case SAIDA_ISENTA = "52";
+  case SAIDA_NAO_TRIBUTADA = "53";
+  case SAIDA_IMUNE = "54";
+  case SAIDA_COM_SUSPENSAO = "55";
+  case OUTRAS_SAIDAS = "99";
+};
