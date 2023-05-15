@@ -33,22 +33,35 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\enums;
+ini_set("display_errors", "On");
+ini_set("display_startup_erros", "On");
+error_reporting(E_ALL);
+ini_set("max_execution_time", 5);
 
-enum IpiCst: string
-{
-  case ENTRADA_RECUPERACAO_CREDITO = "00";
-  case ENTRADA_TRIBUTADA_ALIQUOTA_ZERO = "01";
-  case ENTRADA_ISENTA = "02";
-  case ENTRADA_NAO_TRIBUTADA = "03";
-  case ENTRADA_IMUNE = "04";
-  case ENTRADA_COM_SUSPENSAO = "05";
-  case OUTRAS_ENTRADAS = "49";
-  case SAIDA_TRIBUTADA = "50";
-  case SAIDA_TRIBUTADA_COM_ALIQUOTA_ZERO = "51";
-  case SAIDA_ISENTA = "52";
-  case SAIDA_NAO_TRIBUTADA = "53";
-  case SAIDA_IMUNE = "54";
-  case SAIDA_COM_SUSPENSAO = "55";
-  case OUTRAS_SAIDAS = "99";
-};
+use Pnhs\ParserNF\layout\h;
+use Pnhs\ParserNF\layout\q;
+use Pnhs\ParserNF\Parser;
+
+require "../autoload.php";
+
+try {
+  if (!file_exists("nota_fiscal.xml")) die("Arquivo nota_fiscal.xml não existe");
+  $xml = file_get_contents("nota_fiscal.xml");
+
+  $parser = new parser($xml);
+  $p = $parser->read();
+
+  $group_h = h::run($p);
+
+  if (is_null($group_h)) die('Nota Fiscal Inválida');
+
+  foreach ($group_h as $item) {
+    $group_q[] = (q::run($p, $item->nItem, $item));
+  }
+
+  echo '<p class="display-5">Grupo Q</p><p class="h5">PIS</p><pre>';
+  print_r($group_q);
+  echo '</pre>';
+} catch (Exception $e) {
+  die("<b>Erro:</b> " . $e->getMessage());
+}

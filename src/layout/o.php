@@ -52,7 +52,7 @@ class o extends layout
     $std->qSelo           = self::tag((string) $parser->qSelo, 'qSelo não informado', 'O05', 0);
     $std->cEnq            = self::tag((string) $parser->cEnq, 'cEnq não informado', 'O06', 1);
     if ($parser->IPITrib)
-      $std->CST           = IpiCst::from(self::tag((string) $parser->IPITrib->CST, 'CST não informado', 'O09', 1));
+      $std->CST           = self::tag((string) $parser->IPITrib->CST, 'CST não informado', 'O09', 1);
     if ($parser->vBC || $parser->pIPI) {
       $std->vBC           = self::tag((string) $parser->vBC, 'vBC não informado', 'O10', 1);
       $std->pIPI          = self::tag((string) $parser->pIPI, 'pIPI não informado', 'O13', 1);
@@ -63,7 +63,7 @@ class o extends layout
       $std->vIPI          = self::tag((string) $parser->vIPI, 'vIPI não informado', 'O14', 1);
     }
     if ($parser->IPINT)
-      $std->CST           = IpiCst::from(self::tag((string) $parser->IPINT->CST, 'CST não informado', 'O09', 1));
+      $std->CST           = self::tag((string) $parser->IPINT->CST, 'CST não informado', 'O09', 1);
 
     return $std;
   }

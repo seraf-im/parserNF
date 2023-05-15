@@ -37,11 +37,11 @@ namespace Pnhs\ParserNF\layout;
 
 use stdClass;
 
-class q
+class q extends layout
 {
   public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
   {
-    $parser = $data->NFe->infNFe->det->imposto[$numero_item - 1]->PIS;
+    $parser = $data->NFe->infNFe->det[$numero_item - 1]->imposto->PIS;
 
     $group = key(get_object_vars($parser));
 
@@ -54,35 +54,37 @@ class q
   {
     $parser = $parser->PISAliq;
 
-    $std->pis_situacao_tributaria               = (int) $parser->CST;
-    $std->pis_base_calculo                      = (string) $parser->vBC;
-    $std->pis_aliquota_porcentual               = (string) $parser->pPIS;
-    $std->pis_valor                             = (string) $parser->vPIS;
+    $std->CST             = self::tag((string) $parser->CST, 'CST não informado', 'Q06', 1);
+    $std->vBC             = self::tag((string) $parser->vBC, 'vBC não informado', 'Q07', 1);
+    $std->pPIS            = self::tag((string) $parser->pPIS, 'pPIS não informado', 'Q08', 1);
+    $std->vPIS            = self::tag((string) $parser->vPIS, 'vPIS não informado', 'Q09', 1);
   }
 
   private static function PISQtde($parser, $std): void
   {
     $parser = $parser->PISQtde;
 
-    $std->pis_situacao_tributaria               = (int) $parser->CST;
-    $std->pis_quantidade_vendida                = (string) $parser->qBCProd;
-    $std->pis_aliquota_valor                    = (string) $parser->vAliqProd;
-    $std->pis_valor                             = (string) $parser->vPIS;
+    $std->CST             = self::tag((string) $parser->CST, 'CST não informado', 'Q06', 1);
+    $std->qBCProd         = self::tag((string) $parser->qBCProd, 'qBCProd não informado', 'Q10', 1);
+    $std->vAliqProd       = self::tag((string) $parser->vAliqProd, 'vAliqProd não informado', 'Q11', 1);
+    $std->vPIS            = self::tag((string) $parser->vPIS, 'vPIS não informado', 'Q09', 1);
   }
 
   private static function PISNT($parser, $std): void
   {
     $parser = $parser->PISNT;
 
-    $std->pis_situacao_tributaria               = (int) $parser->CST;
+    $std->CST             = self::tag((string) $parser->CST, 'CST não informado', 'Q06', 1);
   }
 
   private static function PISOutr($parser, $std): void
   {
     $parser = $parser->PISOutr;
 
-    $std->pis_situacao_tributaria               = (int) $parser->CST;
-    $std->pis_base_calculo                      = (string) $parser->vBC;
-    $std->pis_aliquota_porcentual               = (string) $parser->pPIS;
+    $std->CST             = self::tag((string) $parser->CST, 'CST não informado', 'Q06', 1);
+    if ($parser->vBC || $parser->pPIS) {
+      $std->vBC           = self::tag((string) $parser->vBC, 'vBC não informado', 'Q07', 1);
+      $std->pPIS          = self::tag((string) $parser->pPIS, 'pPIS não informado', 'Q08', 1);
+    }
   }
 }
