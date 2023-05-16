@@ -1,5 +1,5 @@
 <?php
-$groups = ['A', 'B', 'BA', 'C', 'D', 'E', 'F', 'G', 'GA', 'H', 'I', 'I01', 'I03', 'I05', 'I07', 'I80', 'J', 'K', 'L', 'LA', 'LB', 'M', 'N', 'NA', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'UA', 'V', 'W', 'W01', 'W02', 'X', 'Y', 'YA'];
+$groups = ['A', 'B', 'BA', 'C', 'D', 'E', 'F', 'G', 'GA', 'H', 'I', 'I01', 'I03', 'I05', 'I07', 'I80', 'J', 'K', 'L', 'LA', 'LB', 'M', 'N', 'NA', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'UA', 'V', 'W', 'W01', 'W02', 'X', 'Y', 'YA', 'YB', 'Z', 'ZA', 'ZB', 'ZC', 'ZD', 'ZX'];
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +51,7 @@ $groups = ['A', 'B', 'BA', 'C', 'D', 'E', 'F', 'G', 'GA', 'H', 'I', 'I01', 'I03'
         <span class="fs-4">ParserNF</span>
       </a>
       <hr>
-      <ul class="nav nav-pills flex-column mb-auto" style="overflow: auto">
+      <ul class="nav nav-pills flex-column mb-auto" style="overflow: auto; flex-direction: column;flex-wrap: nowrap;">
         <?php foreach ($groups as $group) {
           echo "<li class='nav-item'><a class='nav-link text-white' group='$group'>Grupo $group</a></li>";
         }
