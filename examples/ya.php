@@ -33,37 +33,29 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserNF\layout;
+ini_set("display_errors", "On");
+ini_set("display_startup_erros", "On");
+error_reporting(E_ALL);
 
-use stdClass;
+use Pnhs\ParserNF\layout\ya;
+use Pnhs\ParserNF\Parser;
 
-class y extends layout
-{
-  public static function run(object $data): stdClass
-  {
-    $std = new stdClass;
+require "../autoload.php";
 
-    $parser = $data->NFe->infNFe->cobr;
+try {
+  if (!file_exists("nota_fiscal.xml")) die("Arquivo nota_fiscal.xml não existe");
+  $xml = file_get_contents("nota_fiscal.xml");
 
-    if (!$parser)
-      return $std;
+  $parser = new parser($xml);
+  $p = $parser->read();
 
-    $std->nFat            = self::tag((string) $parser->fat->nFat, 'nFat não informado', 'Y03', 1);
-    $std->vOrig           = self::tag((string) $parser->fat->vOrig, 'vOrig não informado', 'Y04', 1);
-    $std->vDesc           = self::tag((string) $parser->fat->vDesc, 'vDesc não informado', 'Y05', 1);
-    $std->vLiq            = self::tag((string) $parser->fat->vLiq, 'vLiq não informado', 'Y06', 1);
+  $group_ya = ya::run($p);
 
-    $i = 0;
-    $r = [];
-    foreach ($parser->dup as $item) {
-      $r[$i]['nDup']      = self::tag((string) $item->nDup, 'nDup não informado', 'Y08', 1);
-      $r[$i]['dVenc']     = self::tag((string) $item->dVenc, 'dVenc não informado', 'Y09', 1);
-      $r[$i]['vDup']      = self::tag((string) $item->vDup, 'vDup não informado', 'Y10', 0);
-      $i++;
-    }
+  if (is_null($group_ya)) die('Nota Fiscal Inválida');
 
-    $std->dup = $r;
-
-    return $std;
-  }
+  echo '<p class="display-5">Grupo YA</p><p class="h5">Informações de Pagamento</p><pre>';
+  print_r($group_ya);
+  echo '</pre>';
+} catch (Exception $e) {
+  die("<b>Erro:</b> " . $e->getMessage());
 }

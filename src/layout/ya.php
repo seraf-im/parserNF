@@ -37,32 +37,32 @@ namespace Pnhs\ParserNF\layout;
 
 use stdClass;
 
-class y extends layout
+class ya extends layout
 {
   public static function run(object $data): stdClass
   {
     $std = new stdClass;
 
-    $parser = $data->NFe->infNFe->cobr;
+    $parser = $data->NFe->infNFe->pag;
 
     if (!$parser)
       return $std;
 
-    $std->nFat            = self::tag((string) $parser->fat->nFat, 'nFat não informado', 'Y03', 1);
-    $std->vOrig           = self::tag((string) $parser->fat->vOrig, 'vOrig não informado', 'Y04', 1);
-    $std->vDesc           = self::tag((string) $parser->fat->vDesc, 'vDesc não informado', 'Y05', 1);
-    $std->vLiq            = self::tag((string) $parser->fat->vLiq, 'vLiq não informado', 'Y06', 1);
-
     $i = 0;
-    $r = [];
-    foreach ($parser->dup as $item) {
-      $r[$i]['nDup']      = self::tag((string) $item->nDup, 'nDup não informado', 'Y08', 1);
-      $r[$i]['dVenc']     = self::tag((string) $item->dVenc, 'dVenc não informado', 'Y09', 1);
-      $r[$i]['vDup']      = self::tag((string) $item->vDup, 'vDup não informado', 'Y10', 0);
+    //$r = null;
+    foreach ($parser->detPag as $item) {
+      $r[$i]['indPag']    = self::tag((string) $item->indPag, 'indPag não informado', 'YA01b', 0);
+      $r[$i]['tPag']      = self::tag((string) $item->tPag, 'tPag não informado', 'YA02', 1);
+      $r[$i]['vPag']      = self::tag((string) $item->vPag, 'vPag não informado', 'YA03', 1);
+      $r[$i]['tpIntegra'] = self::tag((string) $item->card->tpIntegra, 'tpIntegra não informado', 'YA04a', 0);
+      $r[$i]['CNPJ']      = self::tag((string) $item->card->CNPJ, 'CNPJ não informado', 'YA05', 0);
+      $r[$i]['tBand']     = self::tag((string) $item->card->tBand, 'tBand não informado', 'YA06', 0);
+      $r[$i]['cAut']      = self::tag((string) $item->card->cAut, 'cAut não informado', 'YA07', 0);
       $i++;
     }
+    $std->vTroco          = self::tag((string) $parser->vTroco, 'vTroco não informado', 'YA09', 0);
 
-    $std->dup = $r;
+    $std->detPag = $r;
 
     return $std;
   }
