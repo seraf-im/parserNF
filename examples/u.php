@@ -33,34 +33,35 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\enums;
+ini_set("display_errors", "On");
+ini_set("display_startup_erros", "On");
+error_reporting(E_ALL);
+ini_set("max_execution_time", 5);
 
-enum CodigoUf: int {
-  case AC = 12;
-  case AL = 27;
-  case AP = 16;
-  case AM = 13;
-  case BA = 29;
-  case CE = 23;
-  case DF = 53;
-  case ES = 32;
-  case GO = 52;
-  case MA = 21;
-  case MT = 51;
-  case MS = 50;
-  case MG = 31;
-  case PA = 15;
-  case PB = 25;
-  case PR = 41;
-  case PE = 26;
-  case PI = 22;
-  case RJ = 33;
-  case RN = 24;
-  case RS = 43;
-  case RO = 11;
-  case RR = 14;
-  case SC = 42;
-  case SP = 35;
-  case SE = 28;
-  case TO = 17;
-};
+use Pnhs\ParserNF\layout\h;
+use Pnhs\ParserNF\layout\u;
+use Pnhs\ParserNF\Parser;
+
+require "../autoload.php";
+
+try {
+  if (!file_exists("nota_fiscal.xml")) die("Arquivo nota_fiscal.xml não existe");
+  $xml = file_get_contents("nota_fiscal.xml");
+
+  $parser = new parser($xml);
+  $p = $parser->read();
+
+  $group_h = h::run($p);
+
+  if (is_null($group_h)) die('Nota Fiscal Inválida');
+
+  foreach ($group_h as $item) {
+    $group_u[] = (u::run($p, $item->nItem, $item));
+  }
+
+  echo '<p class="display-5">Grupo U</p><p class="h5">ISSQN</p><pre>';
+  print_r($group_u);
+  echo '</pre>';
+} catch (Exception $e) {
+  die("<b>Erro:</b> " . $e->getMessage());
+}

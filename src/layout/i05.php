@@ -33,21 +33,21 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
-use Pnhs\ParserXml\enums\{
+use Pnhs\ParserNF\enums\{
   TpViaTransp
 };
 
-class i05
+class i05 extends layout
 {
   public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
   {
     $parser = $data->NFe->infNFe->det->prod[$numero_item - 1];
 
-    $std->pedido_compra                         = (string) $parser->xPed;
-    $std->numero_item_pedido_compra             = strtotime((string) $parser->nItemPed);
+    $std->xPed             = self::tag((string) $parser?->xPed, 'xPed não informado', 'I60', 0);
+    $std->nItemPed         = self::tag((string) $parser?->nItemPed, 'nItemPed não informado', 'I61', 0);
 
     return $std;
   }

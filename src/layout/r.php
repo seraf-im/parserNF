@@ -33,21 +33,26 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
 
-class r
+class r extends layout
 {
   public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
   {
-    $parser = $data->NFe->infNFe->det->imposto[$numero_item - 1]->PISST;
+    $parser = $data->NFe->infNFe->det[$numero_item - 1]->imposto->PISST;
 
-    $std->pis_base_calculo_st                   = (int) $parser->CST;
-    $std->pis_aliquota_porcentual_st            = (string) $parser->vBC;
-    $std->pis_quantidade_vendida_st             = (string) $parser->qBCProd;
-    $std->pis_aliquota_valor_st                 = (string) $parser->vAliqProd;
-    $std->pis_valor_st                          = (string) $parser->vPIS;
+    if (!$parser)
+      return $std;
+
+    $std->vBC             = self::tag((string) $parser->vBC, 'vBC não informado', 'R02', 1);
+    $std->pPIS            = self::tag((string) $parser->pPIS, 'pPIS não informado', 'R03', 1);
+    if ($parser->qBCProd || $parser->vAliqProd || $parser->vPIS) {
+      $std->qBCProd       = self::tag((string) $parser->qBCProd, 'qBCProd não informado', 'R04', 1);
+      $std->vAliqProd     = self::tag((string) $parser->vAliqProd, 'vAliqProd não informado', 'R05', 1);
+      $std->vPIS          = self::tag((string) $parser->vPIS, 'vPIS não informado', 'R06', 1);
+    }
 
     return $std;
   }

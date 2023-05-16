@@ -33,9 +33,10 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\enums;
+namespace Pnhs\ParserNF\enums;
 
-enum IndIntermed: int {
+enum IndIntermed: int
+{
   case SEM_INTERMEDIADOR = 0;
   case COM_INTERMEDIADOR = 1;
 };

@@ -33,17 +33,20 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
 
-class v
+class v extends layout
 {
   public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
   {
-    $parser = $data->NFe->infNFe->det->imposto[$numero_item - 1]->infAdProd;
+    $parser = $data->NFe->infNFe->det[$numero_item - 1]->infAdProd;
 
-    $std->informacoes_adicionais_item           = (string) $parser;
+    if (!$parser)
+      return $std;
+
+    $std->infAdProd       = self::tag((string) $parser, 'infAdProd não informado', 'V01', 1);
 
     return $std;
   }

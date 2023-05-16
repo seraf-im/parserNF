@@ -33,49 +33,37 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
 
-class g
+class g extends layout
 {
   public static function run(object $data): stdClass
   {
-    $parser = $data->NFe->infNFe->retirada;
+    $parser = $data->NFe->infNFe->entrega;
     $std = new stdClass;
 
-    if ($parser->CNPJ)
-      $std->cnpj_entrega                          = (string) $parser->CNPJ;
-    if ($parser->CPF)
-      $std->cpf_entrega                           = (string) $parser->CPF;
-    if ($parser->xNome)
-      $std->nome_entrega                          = (string) $parser->xNome;
-    if ($parser->xLgr)
-      $std->logradouro_entrega                    = (string) $parser->xLgr;
-    if ($parser->nro)
-      $std->numero_entrega                        = (string) $parser->nro;
-    if ($parser->xCpl)
-      $std->complemento_entrega                   = (string) $parser->xCpl;
-    if ($parser->xBairro)
-      $std->bairro_entrega                        = (string) $parser->xBairro;
-    if ($parser->cMun)
-      $std->codigo_municipio_entrega              = (string) $parser->cMun;
-    if ($parser->xMun)
-      $std->municipio_entrega                     = (string) $parser->xMun;
-    if ($parser->UF)
-      $std->uf_entrega                            = (string) $parser->UF;
-    if ($parser->CEP)
-      $std->cep_entrega                           = (string) $parser->CEP;
-    if ($parser->cPais)
-      $std->codigo_pais_entrega                   = (string) $parser->cPais;
-    if ($parser->xPais)
-      $std->pais_entrega                          = (string) $parser->xPais;
-    if ($parser->fone)
-      $std->telefone_entrega                      = (string) $parser->fone;
-    if ($parser->email)
-      $std->email_entrega                         = (string) $parser->email;
-    if ($parser->IE)
-      $std->inscricao_estadual_entrega            = (string) $parser->IE;
+    if (!$parser)
+      return $std;
+
+    $std->CNPJ    = self::tag((string) $parser->CNPJ, 'CNPJ não informado', 'G02', 0);
+    $std->CPF     = self::tag((string) $parser->CPF, 'CPF não informado', 'G02a', 0);
+    $std->xNome   = self::tag((string) $parser->xNome, 'xNome não informado', 'G02b', 0);
+    $std->xLgr    = self::tag((string) $parser->xLgr, 'xLgr não informado', 'G03', 1);
+    $std->nro     = self::tag((string) $parser->nro, 'nro não informado', 'G04', 1);
+    $std->xCpl    = self::tag((string) $parser->xCpl, 'xCpl não informado', 'G05', 0);
+    $std->xBairro = self::tag((string) $parser->xBairro, 'xBairro não informado', 'G06', 1);
+    $std->cMun    = self::tag((string) $parser->cMun, 'cMun não informado', 'G07', 1);
+    $std->xMun    = self::tag((string) $parser->xMun, 'xMun não informado', 'G08', 1);
+    $std->UF      = self::tag((string) $parser->UF, 'UF não informado', 'G09', 1);
+    $std->CEP     = self::tag((string) $parser->CEP, 'CEP não informado', 'G10', 0);
+    $std->cPais   = self::tag((string) $parser->cPais, 'cPais não informado', 'G11', 0);
+    $std->xPais   = self::tag((string) $parser->xPais, 'xPais não informado', 'G12', 0);
+    $std->fone    = self::tag((string) $parser->fone, 'Gone não informado', 'G13', 0);
+    $std->email   = self::tag((string) $parser->email, 'email não informado', 'G14', 0);
+    $std->IE      = self::tag((string) $parser->IE, 'CNPJ não informado', 'G15', 0);
+
     return $std;
   }
 }

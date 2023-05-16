@@ -33,14 +33,14 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
-use Pnhs\ParserXml\enums\{
+use Pnhs\ParserNF\enums\{
   Uf,
 };
 
-class ga
+class ga extends layout
 {
   public static function run($data): array
   {
@@ -51,12 +51,13 @@ class ga
     if (!$parser)
       return [];
 
+    self::tag($parser, 'Maximo 10 pessoas autorizadas', 'GA01', 0, 10);
+
     foreach ($parser as $item) {
       $std = new stdClass;
-      if ($item->CNPJ)
-        $std->cnpj                                = (string) $item->CNPJ;
-      if ($item->CPF)
-        $std->cpf                                 = (string) $item->CPF;
+
+      $std->CNPJ  = self::tag((string) $item->CNPJ, 'CNPJ não informado', 'GA02', 0);
+      $std->CPF   = self::tag((string) $item->CPF, 'CPF não informado', 'GA03', 0);
 
       $return[$i] = $std;
       $i++;

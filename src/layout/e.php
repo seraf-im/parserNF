@@ -33,54 +33,46 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
 
-class e
+class e extends layout
 {
   public static function run(object $data): stdClass
   {
     $parser = $data->NFe->infNFe->dest;
     $std = new stdClass;
 
-    if ($parser->CNPJ)
-      $std->cnpj_destinatario                         = (string) $parser->CNPJ;
-    if ($parser->CPF)
-      $std->cpf_destinatario                          = (string) $parser->CPF;
-    if ($parser->idEstrangeiro)
-      $std->id_estrangeiro_destinatario               = (string) $parser->idEstrangeiro;
-    $std->nome_destinatario                           = (string) $parser->xNome;
+    if (!$parser)
+      return $std;
 
-    $std->indicador_inscricao_estadual_destinatario   = (string) $parser->indIEDest;
-    if ($parser->IE)
-      $std->inscricao_estadual_destinatario           = (string) $parser->IE;
-    if ($parser->ISUF)
-      $std->inscricao_suframa_destinatario            = (string) $parser->ISUF;
-    if ($parser->IM)
-      $std->inscricao_municipal_destinatario          = (string) $parser->IM;
-    if ($parser->email)
-      $std->email_destinatario                        = (string) $parser->email;
-
+    $std->CNPJ    = self::tag((string) $parser->CNPJ, 'CNPJ não informado', 'E02', 0);
+    $std->CPF    = self::tag((string) $parser->CPF, 'CPF não informado', 'E03', 0);
+    $std->idEstrangeiro    = self::tag((string) $parser->idEstrangeiro, 'idEstrangeiro não informado', 'E03a', 0);
+    $std->xNome    = self::tag((string) $parser->xNome, 'xNome não informado', 'E04', 1);
     self::enderDest($parser->enderDest, $std);
+    $std->indIEDest    = self::tag((string) $parser->indIEDest, 'indIEDest não informado', 'E16a', 1);
+    $std->IE    = self::tag((string) $parser->IE, 'IE não informado', 'E17', 0);
+    $std->ISUF    = self::tag((string) $parser->ISUF, 'ISUF não informado', 'E18', 0);
+    $std->IM    = self::tag((string) $parser->IM, 'IM não informado', 'E18a', 0);
+    $std->email    = self::tag((string) $parser->email, 'email não informado', 'E19', 0);
 
     return $std;
   }
 
   private static function enderDest(object $parser, stdClass $std): void
   {
-    $std->logradouro_destinatario                     = (string) $parser->xLgr;
-    $std->numero_destinatario                         = (string) $parser->nro;
-    if ($parser->xCpl)
-      $std->complemento_destinatario                  = (string) $parser->xCpl;
-    $std->bairro_destinatario                         = (string) $parser->xBairro;
-    $std->codigo_municipio_destinatario               = (string) $parser->cMun;
-    $std->municipio_destinatario                      = (string) $parser->xMun;
-    $std->uf_destinatario                             = (string) $parser->UF;
-    $std->cep_destinatario                            = (string) $parser->CEP;
-    $std->codigo_pais_destinatario                    = (string) $parser->cPais;
-    $std->pais_destinatario                           = (string) $parser->xPais;
-    if ($parser->fone)
-      $std->telefone_destinatario                     = (string) $parser->fone;
+    $std->xLgr = self::tag((string) $parser->xLgr, 'xLgr não informado', 'E06', 1);
+    $std->nro = self::tag((string) $parser->nro, 'nro não informado', 'E07', 1);
+    $std->xCpl = self::tag((string) $parser->xCpl, 'xCpl não informado', 'E08', 0);
+    $std->xBairro = self::tag((string) $parser->xBairro, 'xBairro não informado', 'E09', 1);
+    $std->cMun = self::tag((string) $parser->cMun, 'cMun não informado', 'E10', 1);
+    $std->xMun = self::tag((string) $parser->xMun, 'xMun não informado', 'E11', 1);
+    $std->UF = self::tag((string) $parser->UF, 'UF não informado', 'E12', 1);
+    $std->CEP = self::tag((string) $parser->CEP, 'CEP não informado', 'E13', 0);
+    $std->cPais = self::tag((string) $parser->cPais, 'cPais não informado', 'E14', 0);
+    $std->xPais = self::tag((string) $parser->xPais, 'xPais não informado', 'E15', 0);
+    $std->fone = self::tag((string) $parser->fone, 'fone não informado', 'E16', 0);
   }
 }

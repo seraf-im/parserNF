@@ -33,9 +33,10 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\enums;
+namespace Pnhs\ParserNF\enums;
 
-enum FinNFe: int {
+enum FinNFe: int
+{
   case NORMAL = 1;
   case COMPLEMENTAR = 2;
   case AJUSTE = 3;

@@ -33,34 +33,23 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
-use Pnhs\ParserXml\enums\{
-  Uf,
-  IndPag,
-  Mod,
-  TpNF,
-  IdDest,
-  TpImp,
-  TpEmis,
-  TpAmb,
-  FinNFe,
-  IndFinal,
-  IndPres,
-  IndIntermed,
-  ProcEmi
-};
 
-class k
+class k extends layout
 {
   public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
   {
     $parser = $data->NFe->infNFe->det->prod[$numero_item - 1]?->med;
 
-    $std->medicamento_codigo_anvisa             = (string) $parser->cProdANVISA;
-    $std->medicamento_motivo_isencao            = (string) $parser->xMotivoIsencao;
-    $std->medicamento_preco_maximo_consumidor   = (string) $parser->vPMC;
+    if (!$parser)
+      return $std;
+
+    $std->cProdANVISA      = self::tag((string) $parser->cProdANVISA, 'cProdANVISA não informado', 'K01a', 1);
+    $std->xMotivoIsencao   = self::tag((string) $parser->xMotivoIsencao, 'xMotivoIsencao não informado', 'K01b', 0);
+    $std->vPMC             = self::tag((string) $parser->vPMC, 'vPMC não informado', 'K06', 1);
+
     return $std;
   }
 }

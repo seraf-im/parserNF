@@ -33,87 +33,45 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
 
-class w
+class w extends layout
 {
   public static function run(object $data): stdClass
   {
     $std = new stdClass;
 
-    $parser = $data->NFe->infNFe->total;
+    $parser = $data->NFe->infNFe->total->ICMSTot;
 
-    $group = key(get_object_vars($parser));
+    if (!$parser)
+      return $std;
 
-    self::$group($parser, $std);
+    $std->vBC             = self::tag((string) $parser->vBC, 'vBC não informado', 'W03', 1);
+    $std->vICMS           = self::tag((string) $parser->vICMS, 'vICMS não informado', 'W04', 1);
+    $std->vICMSDeson      = self::tag((string) $parser->vICMSDeson, 'vICMSDeson não informado', 'W04a', 1);
+    $std->vFCPUFDest      = self::tag((string) $parser->vFCPUFDest, 'vFCPUFDest não informado', 'w04c', 0);
+    $std->vICMSUFDest     = self::tag((string) $parser->vICMSUFDest, 'vICMSUFDest não informado', 'W04e', 0);
+    $std->vICMSUFRemet    = self::tag((string) $parser->vICMSUFRemet, 'vICMSUFRemet não informado', 'W04e', 0);
+    $std->vFCP            = self::tag((string) $parser->vFCP, 'vFCP não informado', 'W04h', 1);
+    $std->vBCST           = self::tag((string) $parser->vBCST, 'vBCST não informado', 'W05', 1);
+    $std->vST             = self::tag((string) $parser->vST, 'vST não informado', 'W06', 1);
+    $std->vFCPST          = self::tag((string) $parser->vFCPST, 'vFCPST não informado', 'W06a', 1);
+    $std->vFCPSTRet       = self::tag((string) $parser->vFCPSTRet, 'vFCPSTRet não informado', 'W06b', 1);
+    $std->vProd           = self::tag((string) $parser->vProd, 'vProd não informado', 'W07', 1);
+    $std->vFrete          = self::tag((string) $parser->vFrete, 'vFrete não informado', 'W08', 1);
+    $std->vSeg            = self::tag((string) $parser->vSeg, 'vSeg não informado', 'W09', 1);
+    $std->vDesc           = self::tag((string) $parser->vDesc, 'vDesc não informado', 'W10', 1);
+    $std->vII             = self::tag((string) $parser->vII, 'vII não informado', 'W11', 1);
+    $std->vIPI            = self::tag((string) $parser->vIPI, 'vIPI não informado', 'W12', 1);
+    $std->vIPIDevol       = self::tag((string) $parser->vIPIDevol, 'vIPIDevol não informado', 'W12a', 1);
+    $std->vPIS            = self::tag((string) $parser->vPIS, 'vPIS não informado', 'W13', 1);
+    $std->vCOFINS         = self::tag((string) $parser->vCOFINS, 'vCOFINS não informado', 'W14', 1);
+    $std->vOutro          = self::tag((string) $parser->vOutro, 'vOutro não informado', 'W15', 1);
+    $std->vNF             = self::tag((string) $parser->vNF, 'vNF não informado', 'W16', 1);
+    $std->vTotTrib        = self::tag((string) $parser->vTotTrib, 'vTotTrib não informado', 'W16a', 0);
 
     return $std;
-  }
-
-  private static function ICMSTot($parser, $std): void
-  {
-    $parser = $parser->ICMSTot;
-
-    $std->icms_base_calculo                     = (string) $parser->vBC;
-    $std->icms_valor                            = (string) $parser->vICMS;
-    $std->icms_valor_desonerado                 = (string) $parser->vICMSDeson;
-    $std->fcp_valor_uf_destino                  = (string) $parser->vFCPUFDest;
-    $std->icms_valor_uf_destino                 = (string) $parser->vICMSUFDest;
-    $std->icms_valor_total_uf_remetente         = (string) $parser->vICMSUFRemet;
-    $std->fcp_valor_total                       = (string) $parser->vFCP;
-    $std->icms_base_calculo_st                  = (string) $parser->vBCST;
-    $std->icms_valor_total_st                   = (string) $parser->vST;
-    $std->fcp_valor_total_st                    = (string) $parser->vFCPST;
-    $std->fcp_valor_total_retido_st             = (string) $parser->vFCPSTRet;
-    $std->valor_produtos                        = (string) $parser->vProd;
-    $std->valor_frete                           = (string) $parser->vFrete;
-    $std->valor_seguro                          = (string) $parser->vSeg;
-    $std->valor_desconto                        = (string) $parser->vDesc;
-    $std->valor_total_ii                        = (string) $parser->vII;
-    $std->valor_ipi                             = (string) $parser->vIPI;
-    $std->valor_ipi_devolvido                   = (string) $parser->vIPIDevol;
-    $std->valor_pis                             = (string) $parser->vPIS;
-    $std->valor_cofins                          = (string) $parser->vCOFINS;
-    $std->valor_outras_despesas                 = (string) $parser->valor_outras_despesas;
-    $std->valor_total                           = (string) $parser->valor_total;
-    $std->valor_total_tributos                  = (string) $parser->valor_total_tributos;
-  }
-
-  private static function ISSQNtot($parser, $std): void
-  {
-    $parser = $parser->ISSQNtot;
-
-    $std->valor_total_servicos                  = (string) $parser->vServ;
-    $std->issqn_base_calculo                    = (string) $parser->vBC;
-    $std->issqn_valor_total                     = (string) $parser->vISS;
-    $std->valor_pis_servicos                    = (string) $parser->vPIS;
-    $std->valor_cofins_servicos                 = (string) $parser->vCOFINS;
-    $std->data_prestacao_servico                = (string) $parser->dCompet;
-    $std->issqn_valor_total_deducao             = (string) $parser->vDeducao;
-    $std->issqn_valor_total_outras_retencoes    = (string) $parser->vOutro;
-    $std->issqn_valor_total_desconto_incondicionado = (string) $parser->vDescIncond;
-    $std->issqn_valor_total_desconto_condicionado   = (string) $parser->vDescCond;
-    $std->issqn_valor_total_retencao                = (string) $parser->vISSRet;
-    $std->codigo_regime_especial_tributacao         = (int) $parser->cRegTrib;
-  }
-
-  private static function COFINSNT($parser, $std): void
-  {
-    $parser = $parser->COFINSNT;
-
-    $std->cofins_situacao_tributaria            = (string) $parser->CST;
-  }
-
-  private static function COFINSOutr($parser, $std): void
-  {
-    $parser = $parser->COFINSOutr;
-
-    $std->cofins_base_calculo                   = (string) $parser->vBC;
-    $std->cofins_aliquota_porcentual            = (string) $parser->pCOFINS;
-    $std->cofins_quantidade_vendida             = (string) $parser->qBCProd;
-    $std->cofins_aliquota_valor                 = (string) $parser->vAliqProd;
-    $std->cofins_valor                          = (string) $parser->vCOFINS;
   }
 }

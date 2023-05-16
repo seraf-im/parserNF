@@ -33,9 +33,10 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\enums;
+namespace Pnhs\ParserNF\enums;
 
-enum IndPres: int {
+enum IndPres: int
+{
   case NAO_SE_APLICA = 0;
   case PRESENCIAL = 1;
   case PELA_INTERNET = 2;

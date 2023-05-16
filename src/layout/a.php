@@ -33,19 +33,20 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
 
-class a
+class a extends layout
 {
-  public static function run(object $data): stdClass
+  public static function run(object|bool $data): null|stdClass
   {
+    if (!$data) return null;
     $parser = $data->NFe->infNFe->attributes();
     $std = new stdClass;
 
-    $std->identificador = (string) $parser['Id'];
-    $std->versao = (string) $parser['versao'];
+    $std->versao = self::tag((string)$parser['versao'], 'Versão não informado', 'A02', 1, 1);
+    $std->Id = self::tag((string)$parser['Id'], 'Identificador da TAG a ser assinada não informado', 'A03', 1, 1);
 
     return $std;
   }

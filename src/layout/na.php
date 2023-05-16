@@ -33,24 +33,27 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
 
-class na
+class na extends layout
 {
   public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
   {
-    $parser = $data->NFe->infNFe->det->imposto[$numero_item - 1]->ICMSUFDest;
+    $parser = $data->NFe->infNFe->det[$numero_item - 1]->imposto->ICMSUFDest;
 
-    $std->icms_base_calculo_uf_destino          = (string) $parser->vBCUFDest;
-    $std->fcp_base_calculo_uf_destino           = (string) $parser->vBCFCPUFDest;
-    $std->fcp_percentual_uf_destino             = (string) $parser->pFCPUFDest;
-    $std->icms_aliquota_interestadual           = (string) $parser->pICMSInter;
-    $std->icms_percentual_partilha              = (string) $parser->pICMSInterPart;
-    $std->fcp_valor_uf_destino                  = (string) $parser->vFCPUFDest;
-    $std->icms_valor_uf_destino                 = (string) $parser->vICMSUFDest;
-    $std->icms_valor_uf_remetente               = (string) $parser->vICMSUFDest;
+    if (!$parser)
+      return $std;
+
+    $std->vBCUFDest       = self::tag((string) $parser->vBCUFDest, 'vBCUFDest não informado', 'N12', 1);
+    $std->vBCFCPUFDest    = self::tag((string) $parser->vBCFCPUFDest, 'vBCFCPUFDest não informado', 'N12', 1);
+    $std->pFCPUFDest      = self::tag((string) $parser->pFCPUFDest, 'pFCPUFDest não informado', 'N12', 0);
+    $std->pICMSInter      = self::tag((string) $parser->pICMSInter, 'pICMSInter não informado', 'N12', 1);
+    $std->pICMSInterPart  = self::tag((string) $parser->pICMSInterPart, 'pICMSInterPart não informado', 'N12', 1);
+    $std->vFCPUFDest      = self::tag((string) $parser->vFCPUFDest, 'vFCPUFDest não informado', 'N12', 0);
+    $std->vICMSUFDest     = self::tag((string) $parser->vICMSUFDest, 'vICMSUFDest não informado', 'N12', 1);
+    $std->vICMSUFDest     = self::tag((string) $parser->vICMSUFDest, 'vICMSUFDest não informado', 'N12', 1);
 
     return $std;
   }

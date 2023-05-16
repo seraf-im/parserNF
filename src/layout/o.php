@@ -33,46 +33,38 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
+use Pnhs\ParserNF\enums\IpiCst;
 use stdClass;
-use Pnhs\ParserXml\enums\{
-  Uf,
-  IndPag,
-  Mod,
-  TpNF,
-  IdDest,
-  TpImp,
-  TpEmis,
-  TpAmb,
-  FinNFe,
-  IndFinal,
-  IndPres,
-  IndIntermed,
-  ProcEmi
-};
 
-// class o
-// {
-//   public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
-//   {
-//     $parser = $data->NFe->infNFe->det->imposto[$numero_item - 1]->IPI;
+class o extends layout
+{
+  public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
+  {
+    $parser = $data->NFe->infNFe->det[$numero_item - 1]->imposto->IPI;
 
-//     $std->icms_base_calculo_uf_destino          = (string) $parser->vBCUFDest;
-//     $std->fcp_base_calculo_uf_destino           = (string) $parser->vBCFCPUFDest;
-//     $std->fcp_percentual_uf_destino             = (string) $parser->pFCPUFDest;
-//     $std->icms_aliquota_interestadual           = (string) $parser->pICMSInter;
-//     $std->icms_percentual_partilha              = (string) $parser->pICMSInterPart;
-//     $std->fcp_valor_uf_destino                  = (string) $parser->vFCPUFDest;
-//     $std->icms_valor_uf_destino                 = (string) $parser->vICMSUFDest;
-//     $std->icms_valor_uf_remetente               = (string) $parser->vICMSUFDest;
+    if (!$parser)
+      return $std;
 
-//     ipi_cnpj_produtor CNPJProd
-//     ipi_codigo_selo_controle cSelo
-//     ipi_quantidade_selo_controle qSelo
-//     ipi_codigo_enquadramento_legal cEnq
+    $std->CNPJProd        = self::tag((string) $parser->CNPJProd, 'CNPJProd não informado', 'O03', 0);
+    $std->cSelo           = self::tag((string) $parser->cSelo, 'cSelo não informado', 'O04', 0);
+    $std->qSelo           = self::tag((string) $parser->qSelo, 'qSelo não informado', 'O05', 0);
+    $std->cEnq            = self::tag((string) $parser->cEnq, 'cEnq não informado', 'O06', 1);
+    if ($parser->IPITrib)
+      $std->CST           = self::tag((string) $parser->IPITrib->CST, 'CST não informado', 'O09', 1);
+    if ($parser->vBC || $parser->pIPI) {
+      $std->vBC           = self::tag((string) $parser->vBC, 'vBC não informado', 'O10', 1);
+      $std->pIPI          = self::tag((string) $parser->pIPI, 'pIPI não informado', 'O13', 1);
+    }
+    if ($parser->qUnid || $parser->vUnid || $parser->vIPI) {
+      $std->qUnid         = self::tag((string) $parser->qUnid, 'qUnid não informado', 'O11', 1);
+      $std->vUnid         = self::tag((string) $parser->vUnid, 'vUnid não informado', 'O12', 1);
+      $std->vIPI          = self::tag((string) $parser->vIPI, 'vIPI não informado', 'O14', 1);
+    }
+    if ($parser->IPINT)
+      $std->CST           = self::tag((string) $parser->IPINT->CST, 'CST não informado', 'O09', 1);
 
-
-//     return $std;
-//   }
-// }
+    return $std;
+  }
+}

@@ -33,32 +33,18 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
-use Pnhs\ParserXml\enums\{
-  Uf,
-  IndPag,
-  Mod,
-  TpNF,
-  IdDest,
-  TpImp,
-  TpEmis,
-  TpAmb,
-  FinNFe,
-  IndFinal,
-  IndPres,
-  IndIntermed,
-  ProcEmi
-};
 
-class m
+class m extends layout
 {
   public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
   {
-    $parser = $data->NFe->infNFe->det->imposto[$numero_item - 1];
+    $parser = $data->NFe->infNFe->det[$numero_item - 1]->imposto;
 
-    $std->valor_total_tributos                  = (string) $parser->vTotTrib;
+    $std->vTotTrib         = self::tag((string) $parser?->vTotTrib, 'vTotTrib não informado', 'M02', 0);
+
     return $std;
   }
 }

@@ -33,49 +33,37 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
 
-class f
+class f extends layout
 {
   public static function run(object $data): stdClass
   {
     $parser = $data->NFe->infNFe->retirada;
     $std = new stdClass;
 
-    if ($parser->CNPJ)
-      $std->cnpj_retirada                         = (string) $parser->CNPJ;
-    if ($parser->CPF)
-      $std->cpf_retirada                          = (string) $parser->CPF;
-    if ($parser->xNome)
-      $std->nome_retirada                         = (string) $parser->xNome;
-    if ($parser->xLgr)
-      $std->logradouro_retirada                   = (string) $parser->xLgr;
-    if ($parser->nro)
-      $std->numero_retirada                       = (string) $parser->nro;
-    if ($parser->xCpl)
-      $std->complemento_retirada                  = (string) $parser->xCpl;
-    if ($parser->xBairro)
-      $std->bairro_retirada                       = (string) $parser->xBairro;
-    if ($parser->cMun)
-      $std->codigo_municipio_retirada             = (string) $parser->cMun;
-    if ($parser->xMun)
-      $std->municipio_retirada                    = (string) $parser->xMun;
-    if ($parser->UF)
-      $std->uf_retirada                           = (string) $parser->UF;
-    if ($parser->CEP)
-      $std->cep_retirada                          = (string) $parser->CEP;
-    if ($parser->cPais)
-      $std->codigo_pais_retirada                  = (string) $parser->cPais;
-    if ($parser->xPais)
-      $std->pais_retirada                         = (string) $parser->xPais;
-    if ($parser->fone)
-      $std->telefone_retirada                     = (string) $parser->fone;
-    if ($parser->email)
-      $std->email_retirada                        = (string) $parser->email;
-    if ($parser->IE)
-      $std->inscricao_estadual_retirada           = (string) $parser->IE;
+    if (!$parser)
+      return $std;
+
+    $std->CNPJ    = self::tag((string) $parser->CNPJ, 'CNPJ não informado', 'F02', 1);
+    $std->CPF     = self::tag((string) $parser->CPF, 'CPF não informado', 'F02a', 1);
+    $std->xNome   = self::tag((string) $parser->xNome, 'xNome não informado', 'F02b', 0);
+    $std->xLgr    = self::tag((string) $parser->xLgr, 'xLgr não informado', 'F03', 1);
+    $std->nro     = self::tag((string) $parser->nro, 'nro não informado', 'F04', 1);
+    $std->xCpl    = self::tag((string) $parser->xCpl, 'xCpl não informado', 'F05', 0);
+    $std->xBairro = self::tag((string) $parser->xBairro, 'xBairro não informado', 'F06', 1);
+    $std->cMun    = self::tag((string) $parser->cMun, 'cMun não informado', 'F07', 1);
+    $std->xMun    = self::tag((string) $parser->xMun, 'xMun não informado', 'F08', 1);
+    $std->UF      = self::tag((string) $parser->UF, 'UF não informado', 'F09', 1);
+    $std->CEP     = self::tag((string) $parser->CEP, 'CEP não informado', 'F10', 0);
+    $std->cPais   = self::tag((string) $parser->cPais, 'cPais não informado', 'F11', 0);
+    $std->xPais   = self::tag((string) $parser->xPais, 'xPais não informado', 'F12', 0);
+    $std->fone    = self::tag((string) $parser->fone, 'fone não informado', 'F13', 0);
+    $std->email   = self::tag((string) $parser->email, 'email não informado', 'F14', 0);
+    $std->IE      = self::tag((string) $parser->IE, 'CNPJ não informado', 'F15', 0);
+
     return $std;
   }
 }

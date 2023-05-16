@@ -33,11 +33,11 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
 
-class h
+class h extends layout
 {
   public static function run($data): array
   {
@@ -50,8 +50,7 @@ class h
 
     foreach ($parser as $item) {
       $std = new stdClass;
-      $std->numero_item                           = (int) $item->attributes()['nItem'];
-      //i::run($item, $std->numero_item, $std);
+      $std->nItem = (int) self::tag((string) $item->attributes()['nItem'], 'nItem não informado', 'H01', 1);
 
       $return[$i] = $std;
       $i++;

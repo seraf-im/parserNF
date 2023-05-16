@@ -33,59 +33,29 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+ini_set("display_errors", "On");
+ini_set("display_startup_erros", "On");
+error_reporting(E_ALL);
 
-use stdClass;
-use Pnhs\ParserXml\enums\{
-  TpViaTransp
-};
+use Pnhs\ParserNF\layout\h;
+use Pnhs\ParserNF\Parser;
 
-class i01
-{
-  public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
-  {
-    $parser = $data->NFe->infNFe->det->prod[$numero_item - 1]?->DI;
-    $return = [];
-    $i = 0;
+require "../autoload.php";
 
-    if (!$parser)
-      return new stdClass;
+try {
+  if (!file_exists("nota_fiscal.xml")) die("Arquivo nota_fiscal.xml não existe");
+  $xml = file_get_contents("nota_fiscal.xml");
 
-    $std->numero_documento_importacao           = (string) $parser->nDI;
-    $std->data_documento_importacao             = strtotime((string) $parser->dDI);
-    $std->local_desembaraco                     = (string) $parser->xLocDesemb;
-    $std->uf_desembaraco                        = (string) $parser->UFDesemb;
-    $std->data_desembaraco                      = strtotime((string) $parser->dDesemb);
-    $std->via_transporte                        = TpViaTransp::from((int) $parser->tpViaTransp);
-    $std->valor_afrmm                           = (string) $parser->vAFRMM;
-    $std->tipo_importacao                       = TpIntermedio::from((int) $parser->tpIntermedio);
-    $std->cnpj_intermedio                       = (string) $parser->CNPJ;
-    $std->uf_intermedio                         = (string) $parser->UFTerceiro;
-    $std->codigo_exportador                     = (string) $parser->cExportador;
+  $parser = new parser($xml);
+  $p = $parser->read();
 
-    $i = 0;
-    if ($parser->adi) {
-      foreach ($parser->adi as $item) {
-        $return[$i] = self::adi($item, $std);
-        $i++;
-      }
+  $group_h = h::run($p);
 
-      $std->adi = $return;
-    }
+  if (is_null($group_h)) die('Nota Fiscal Inválida');
 
-    return $std;
-  }
-
-  private static function adi(object $parser): object
-  {
-    $std = new stdClass;
-
-    $std->numero_adicao                         = (string) $parser->nAdicao;
-    $std->numero_sequencial_item_adicao         = (string) $parser->nSeqAdic;
-    $std->codigo_fabricante_estrangeiro         = (string) $parser->cFabricante;
-    $std->valor_desconto_adicao                 = (string) $parser->vDescDI;
-    $std->numero_drawback_importacao            = (string) $parser->nDraw;
-
-    return $std;
-  }
+  echo '<p class="display-5">Grupo H</p><p class="h5">Detalhamento de Produtos e Serviços da NF-e</p><pre>';
+  print_r($group_h);
+  echo '</pre>';
+} catch (Exception $e) {
+  die("<b>Erro:</b> " . $e->getMessage());
 }

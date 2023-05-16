@@ -1,11 +1,16 @@
 {
-    "name": "pnhs/parser_xml",
-    "description": "Biblioteca faz a conversão do xml de nota fiscal eletrônica brasileira para um objeto PHP, com a intenção de facilitar a importação para o sistema.",
+    "name": "pnhs/parser_nf",
+    "description": "Biblioteca faz a conversão do xml de nf-e e nfc-e brasileira para um objeto PHP, com a intenção de facilitar a importação para o sistema.",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Pnhs\\ParserXml\\": "src/"
+            "Pnhs\\ParserNF\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
         }
     },
     "authors": [
@@ -15,5 +20,7 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {}
+    "require": {
+        "php": ">=8.0"
+    }
 }

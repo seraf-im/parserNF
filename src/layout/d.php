@@ -33,11 +33,11 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
 
-class d
+class d extends layout
 {
   public static function run($data): stdClass
   {
@@ -47,17 +47,17 @@ class d
     if (!$data->NFe->infNFe->avulsa)
       return $std;
 
-    $std->cnpj_orgao_emissor                  = $parser->CNPJ;
-    $std->nome_orgao_emissor                  = $parser->xOrgao;
-    $std->matricula_agente_emissor            = $parser->matr;
-    $std->nome_agente_emissor                 = $parser->xAgente;
-    $std->telefone_orgao_emissor              = $parser->fone;
-    $std->uf_orgao_emissor                    = $parser->UF;
-    $std->numero_dar                          = $parser->nDAR;
-    $std->emissao_dar                         = $parser->dEmi;
-    $std->valor_dar                           = $parser->vDAR;
-    $std->reparticao_orgao_emissor            = $parser->repEmi;
-    $std->data_pagamento_dar                  = $parser->dPag;
+    $std->CNPJ    = self::tag((string) $parser->CNPJ, 'CNPJ não informado', 'D02', 1);
+    $std->xOrgao  = self::tag((string) $parser->xOrgao, 'xOrgao não informado', 'D03', 1);
+    $std->matr    = self::tag((string) $parser->matr, 'matr não informado', 'D04', 1);
+    $std->xAgente = self::tag((string) $parser->xAgente, 'xAgente não informado', 'D05', 1);
+    $std->fone    = self::tag((string) $parser->fone, 'fone não informado', 'D06', 0);
+    $std->UF      = self::tag((string) $parser->UF, 'UF não informado', 'D07', 1);
+    $std->nDAR    = self::tag((string) $parser->nDAR, 'nDAR não informado', 'D08', 0);
+    $std->dEmi    = self::tag((string) $parser->dEmi, 'dEmi não informado', 'D09', 0);
+    $std->vDAR    = self::tag((string) $parser->vDAR, 'vDAR não informado', 'D10', 0);
+    $std->repEmi  = self::tag((string) $parser->repEmi, 'repEmi não informado', 'D11', 1);
+    $std->dPag    = self::tag((string) $parser->dPag, 'dPag não informado', 'D12', 0);
 
     return $std;
   }

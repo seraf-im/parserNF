@@ -33,34 +33,32 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
-use Pnhs\ParserXml\enums\{
-  TpViaTransp
-};
 
-class i80
+class i80 extends layout
 {
   public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
   {
     $parser = $data->NFe->infNFe->det->prod[$numero_item - 1]?->rastro;
 
-    $i = 0;
-    $return = [];
-    foreach ($parser as $item) {
-      $std0 = new stdClass;
-      $std0->numero_lote                             = (string) $item->nLote;
-      $std0->quantidade_lote                         = (string) $item->qLote;
-      $std0->data_fabricacao                         = (string) $item->dFab;
-      $std0->data_validade                           = (string) $item->dVal;
-      $std0->codigo_agregacao                        = (string) $item->cAgreg;
+    if (!$parser)
+      return $std;
 
-      $return[$i] = $std0;
+    self::tag($parser, 'No máximo 500 rastros', 'I80', 0, 500);
+
+    $i = 0;
+    foreach ($parser as $item) {
+      $r['nLote']            = self::tag((string) $item->nLote, 'nLote não informado', 'I81', 1);
+      $r['qLote']            = self::tag((string) $item->qLote, 'qLote não informado', 'I82', 1);
+      $r['dFab']             = self::tag((string) $item->dFab, 'dFab não informado', 'I83', 1);
+      $r['dVal']             = self::tag((string) $item->dVal, 'dVal não informado', 'I84', 1);
+      $r['cAgreg']           = self::tag((string) $item->cAgreg, 'cAgreg não informado', 'I85', 0);
+
+      $std->$i = $r;
       $i++;
     }
-
-    $std->rastro = $return;
 
     return $std;
   }

@@ -33,20 +33,20 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
-use Pnhs\ParserXml\enums\{
+use Pnhs\ParserNF\enums\{
   TpViaTransp
 };
 
-class i07
+class i07 extends layout
 {
   public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
   {
     $parser = $data->NFe->infNFe->det->prod[$numero_item - 1];
 
-    $std->numero_fci                            = (string) $parser->nFCI;
+    $std->nFCI             = self::tag((string) $parser?->nFCI, 'nFCI não informado', 'I70', 0);
 
     return $std;
   }

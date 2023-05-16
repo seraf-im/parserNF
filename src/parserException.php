@@ -33,7 +33,7 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml;
+namespace Pnhs\ParserNF;
 
 class parserException extends \InvalidArgumentException
 {

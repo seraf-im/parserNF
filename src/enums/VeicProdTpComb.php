@@ -33,38 +33,26 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\enums;
 
-use stdClass;
-
-class i03
+enum VeicProdTpComb: string
 {
-  public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
-  {
-    $parser = $data->NFe->infNFe->det->prod[$numero_item - 1];
-    $return = [];
-    $i = 0;
-
-    // $std->numero_documento_importacao           = (string) $parser->nDI;
-    // $std->data_documento_importacao             = (string) $parser->dDI;
-    // $std->local_desembaraco                     = (string) $parser->xLocDesemb;
-    // $std->uf_desembaraco                        = (string) $parser->UFDesemb;
-    // $std->data_desembaraco                      = (string) $parser->dDesemb;
-    // $std->via_transporte                        = (string) $parser->tpViaTransp;
-    // $std->valor_afrmm                           = (string) $parser->vAFRMM;
-    // $std->tipo_importacao                       = (string) $parser->tpIntermedio;
-    // $std->cnpj_intermedio                       = (string) $parser->CNPJ;
-    // $std->uf_intermedio                         = (string) $parser->UFTerceiro;
-    // $std->codigo_exportador                     = (string) $parser->cExportador;
-
-    // if ($parser->adi)
-    //   self::detExport($parser->adi, $std);
-
-    return $std;
-  }
-
-  private static function detExport(object $parser, stdClass $std): void
-  {
-    // $std->numero_drawback_exportacao            = (string) $parser->nDraw;
-  }
+  case ALCOOL = "01";
+  case GASOLINA = "02";
+  case DIESEL = "03";
+  case GASOGENIO = "04";
+  case GAS_METANO = "05";
+  case ELETRICO_FONTE_INTERNA = "06";
+  case ELETRICO_FONTE_EXTERNA = "07";
+  case GASOLINA_GAS_NATURAL_COMBUSTIVEL = "08";
+  case ALCOOL_GAS_NATURAL_COMBUSTIVEL = "09";
+  case DIESEL_GAS_NATURAL_COMBUSTIVEL = "10";
+  case VIDE_CAMPO_OBSERVACAO = "11";
+  case ALCOOL_GAS_NATURAL_VEICULAR = "12";
+  case GASOLINA_GAS_NATURAL_VEICULAR = "13";
+  case DIESEL_GAS_NATURAL_VEICULAR = "14";
+  case GAS_NATURAL_VEICULAR = "15";
+  case ALCOOL_GASOLINA = "16";
+  case GASOLINA_ALCOOL_GAS_NATURAL_VEICULAR = "17";
+  case GASOLINA_ELETRICO = "18";
 }

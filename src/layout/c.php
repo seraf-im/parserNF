@@ -33,57 +33,52 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
-use Pnhs\ParserXml\enums\{
+use Pnhs\ParserNF\enums\{
   CRT
 };
 
-class c
+class c extends layout
 {
   public static function run($data): stdClass
   {
     $parser = $data->NFe->infNFe->emit;
     $std = new stdClass;
 
-    if ($parser->CNPJ)
-      $std->cnpj_emitente                     = (string) $parser->CNPJ;
-    if ($parser->CPF)
-      $std->cpf_emitente                      = (string) $parser->CPF;
-    $std->nome_emitente                       = (string) $parser->xNome;
-    if ($parser->xFant)
-      $std->nome_fantasia_emitente            = (string) $parser->xFant;
-    $std->inscricao_estadual_emitente         = (string) $parser->IE;
-    if ($parser->IEST)
-      $std->inscricao_estadual_st_emitente      = (string) $parser->IEST;
-    if ($parser->IM)
-      $std->inscricao_municipal_emitente        = (string) $parser->IM;
-    if ($parser->CNAE)
-      $std->cnae_fiscal_emitente                = (string) $parser->CNAE;
-    $std->regime_tributario_emitente          = CRT::from((int) $parser->CRT);
-
-    self::enderEmit($parser->enderEmit, $std);
-
+    $std->CNPJ    = self::tag((string) $parser->CNPJ, 'CNPJ não informado', 'C02', 0);
+    $std->CPF     = self::tag((string) $parser->CPF, 'CPF não informado', 'C02a', 0);
+    $std->xNome   = self::tag((string) $parser->xNome, 'xNome não informado', 'C03', 1);
+    $std->xFant   = self::tag((string) $parser->xFant, 'xFant não informado', 'C04', 0);
+    if ($parser->enderEmit) self::enderEmit($parser->enderEmit, $std);
+    $std->IE      = self::tag((string) $parser->IE, 'IE não informado', 'C17', 1);
+    $std->IEST    = self::tag((string) $parser->IEST, 'IEST não informado', 'C18', 0);
+    self::imOrCnae($parser, $std);
+    $std->CRT     = self::tag((string) $parser->CRT, 'CRT não informado', 'C21', 1);
     return $std;
   }
 
   private static function enderEmit(object $parser, stdClass $std): void
   {
-    $std->logradouro_emitente                 = (string) $parser->xLgr;
-    $std->numero_emitente                     = (string) $parser->nro;
-    if ($parser->xCpl)
-      $std->complemento_emitente              = (string) $parser->xCpl;
-    $std->bairro_emitente                     = (string) $parser->xBairro;
-    $std->codigo_municipio_emitente           = (string) $parser->cMun;
-    $std->municipio_emitente                  = (string) $parser->xMun;
-    $std->uf_emitente                         = (string) $parser->UF;
-    $std->cep_emitente                        = (string) $parser->CEP;
-    if ($parser->cPais)
-      $std->codigo_pais_emitente              = (string) $parser->cPais;
-    if ($parser->xPais)
-      $std->pais_emitente                     = (string) $parser->xPais;
-    if ($parser->fone)
-      $std->telefone_emitente                 = (string) $parser->fone;
+    $std->xLgr    = self::tag((string) $parser->xLgr, 'xFant não informado', 'C06', 1);
+    $std->nro     = self::tag((string) $parser->nro, 'nro não informado', 'C07', 1);
+    $std->xCpl    = self::tag((string) $parser->xCpl, 'xCpl não informado', 'C08', 0);
+    $std->xBairro = self::tag((string) $parser->xBairro, 'xBairro não informado', 'C09', 1);
+    $std->cMun    = self::tag((string) $parser->cMun, 'cMun não informado', 'C10', 1);
+    $std->xMun    = self::tag((string) $parser->xMun, 'xMun não informado', 'C11', 1);
+    $std->UF      = self::tag((string) $parser->UF, 'UF não informado', 'C12', 1);
+    $std->CEP     = self::tag((string) $parser->CEP, 'CEP não informado', 'C13', 1);
+    $std->cPais   = self::tag((string) $parser->cPais, 'cPais não informado', 'C14', 0);
+    $std->xPais   = self::tag((string) $parser->xPais, 'xPais não informado', 'C15', 0);
+    $std->fone    = self::tag((string) $parser->fone, 'fone não informado', 'C16', 0);
+  }
+
+  private static function imOrCnae(object $parser, stdClass $std): void
+  {
+    if ($parser->IM || $parser->CNAE) {
+      $std->IM    = self::tag((string) $parser->IM, 'IM não informado', 'C19', 1);
+      $std->CNAE  = self::tag((string) $parser->CNAE, 'CNAE não informado', 'C20', 1);
+    }
   }
 }

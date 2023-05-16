@@ -33,29 +33,38 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml;
+namespace Pnhs\ParserNF;
+
+use Exception;
 
 class Parser
 {
-  private object $parser;
+  private object|bool $parser;
   private int $mod;
   public array $models = [55, 65];
 
   public function __construct(string $xml)
   {
-    $xml_ = preg_replace('/xmlns[^=]*="[^"]*"/i', '', $xml);
-    $this->parser = simplexml_load_string($xml_);
-    $this->mod = (int) $this->parser->NFe?->infNFe?->ide?->mod;
+    try {
+      $xml_ = preg_replace('/xmlns[^=]*="[^"]*"/i', '', $xml);
 
-    if (!in_array($this->mod, $this->models))
-      throw parserException::wrong(0, (string) $this->mod);
+      libxml_use_internal_errors(true);
+      $this->parser = simplexml_load_string($xml_);
 
-    return $this->parser;
+      if (!$this->parser) return null;
+      $this->mod = (int) $this->parser->NFe?->infNFe?->ide?->mod;
+
+      if (!in_array($this->mod, $this->models))
+        throw parserException::wrong(0, (string) $this->mod);
+
+      return $this->parser;
+    } catch (Exception) {
+      return null;
+    }
   }
 
-  public function r()
+  public function read()
   {
-    // libxml_use_internal_errors(true);
     return $this->parser;
   }
 }

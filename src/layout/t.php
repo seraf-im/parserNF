@@ -33,21 +33,26 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
 
-class t
+class t extends layout
 {
   public static function run(object $data, int $numero_item, $std = new stdClass): stdClass
   {
-    $parser = $data->NFe->infNFe->det->imposto[$numero_item - 1]->COFINSST;
+    $parser = $data->NFe->infNFe->det[$numero_item - 1]->imposto->COFINSST;
 
-    $std->cofins_base_calculo_st                = (string) $parser->vBC;
-    $std->cofins_aliquota_porcentual_st         = (string) $parser->pCOFINS;
-    $std->cofins_quantidade_vendida_st          = (string) $parser->qBCProd;
-    $std->cofins_aliquota_valor_st              = (string) $parser->vAliqProd;
-    $std->cofins_valor_st                       = (string) $parser->vCOFINS;
+    if (!$parser)
+      return $std;
+
+    $std->vBC             = self::tag((string) $parser->vBC, 'vBC não informado', 'T02', 1);
+    $std->pCOFINS         = self::tag((string) $parser->pCOFINS, 'pCOFINS não informado', 'T03', 1);
+    if ($parser->qBCProd || $parser->vAliqProd || $parser->vCOFINS) {
+      $std->qBCProd       = self::tag((string) $parser->qBCProd, 'qBCProd não informado', 'T04', 1);
+      $std->vAliqProd     = self::tag((string) $parser->vAliqProd, 'vAliqProd não informado', 'T05', 1);
+      $std->vCOFINS       = self::tag((string) $parser->vCOFINS, 'vCOFINS não informado', 'T06', 1);
+    }
 
     return $std;
   }

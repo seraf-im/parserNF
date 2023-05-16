@@ -33,10 +33,10 @@ declare(strict_types=1);
 ##                                          INICIO CÓDIGO DE FONTE!                                          ##
 ###############################################################################################################
 
-namespace Pnhs\ParserXml\layout;
+namespace Pnhs\ParserNF\layout;
 
 use stdClass;
-use Pnhs\ParserXml\enums\{
+use Pnhs\ParserNF\enums\{
   Uf,
   IndPag,
   Mod,
@@ -52,38 +52,37 @@ use Pnhs\ParserXml\enums\{
   ProcEmi
 };
 
-class b
+class b extends layout
 {
   public static function run(object $data): stdClass
   {
+    if (!$data) return null;
     $parser = $data->NFe->infNFe->ide;
     $std = new stdClass;
 
-    $std->codigo_uf                           = Uf::from((int)$parser->cUF);
-    $std->codigo_unico                        = (int) $parser->cNF;
-    $std->natureza_operacao                   = (string) $parser->natOp;
-    $std->modelo                              = Mod::from((string) $parser->mod);
-    $std->serie                               = (int) $parser->serie;
-    $std->numero                              = (int) $parser->nNF;
-    $std->data_emissao                        = strtotime((string) $parser->dhEmi);
-    if ($parser->dhSaiEnt)
-      $std->data_entrada_saida                = strtotime((string) $parser->dhSaiEnt);
-    $std->tipo_documento                      = TpNF::from((int) $parser->tpNF);
-    $std->local_destino                       = IdDest::from((int) $parser->idDest);
-    $std->codigo_municipio                    = (int) $parser->cMunFG;
-    $std->tipo_impressao                      = TpImp::from((int) $parser->tpImp);
-    $std->tipo_emissao                        = TpEmis::from((int) $parser->tpEmis);
-    $std->digito_verificador                  = (int) $parser->cDV;
-    $std->tipo_ambiente                       = TpAmb::from((int) $parser->tpAmb);
-    $std->finalidade_emissao                  = FinNFe::from((int) $parser->finNFe);
-    $std->consumidor_final                    = IndFinal::from((int) $parser->indFinal);
-    $std->presenca_comprador                  = IndPres::from((int) $parser->indPres);
-    if ($parser->indIntermed)
-      $std->indicador_intermediario           = IndIntermed::from((int) $parser->indIntermed);
-    $std->emissor                             = ProcEmi::from((int) $parser->procEmi);
-    $std->versao_emissor                      = (string) $parser->verProc;
-    $std->data_contigencia                    = strtotime((string) $parser->dhCont);
-    $std->justificativa_contigencia           = (string) $parser->xJust;
+    $std->cUF         = Uf::from((int) self::tag((string) $parser->cUF, 'cUF não informado', 'B02', 1));
+    $std->cNF         = self::tag((string) $parser->cNF, 'cNF não informado', 'B03', 1);
+    $std->natOp       = self::tag((string) $parser->natOp, 'natOp não informado', 'B04', 1);
+    $std->mod         = Mod::from(self::tag((string) $parser->mod, '', 'B06', 1));
+    $std->serie       = self::tag((string) $parser->serie, 'serie não informado', 'B07', 1);
+    $std->nNF         = self::tag((string) $parser->nNF, 'nNF não informado', 'B08', 1);
+    $std->dhEmi       = self::tag((string) $parser->dhEmi, 'dhEmi não informado', 'B09', 1);
+    $std->dhSaiEnt    = self::tag((string) $parser->dhSaiEnt, '', 'B10', 0);
+    $std->tpNF        = TpNF::from((int)self::tag((string)$parser->tpNF, 'tpNF não informado', 'B11', 1));
+    $std->idDest      = IdDest::from((int)self::tag((string)$parser->idDest, 'idDest não informado', 'B11a', 1));
+    $std->cMunFG      = self::tag((string) $parser->cMunFG, 'cMunFG não informado', 'B12', 1);
+    $std->tpImp       = TpImp::from((int)self::tag((string) $parser->tpImp, 'tpImp não informado', 'B21', 1));
+    $std->tpEmis      = TpEmis::from((int)self::tag((string) $parser->tpEmis, 'tpEmis não informado', 'B22', 1));
+    $std->cDV         = self::tag((string) $parser->cDV, 'cDV não informado', 'B23', 1);
+    $std->tpAmb       = TpAmb::from((int)self::tag((string)$parser->tpAmb, 'tpAmb não informado', 'B24', 1));
+    $std->finNFe      = FinNFe::from((int)self::tag((string)$parser->finNFe, 'finNFe não informado', 'B25', 1));
+    $std->indFinal    = IndFinal::from((int)self::tag((string)$parser->indFinal, 'indFinal não informado', 'B25a', 1));
+    $std->indPres     = IndPres::from((int)self::tag((string)$parser->indPres, 'IndPres não informado', 'B25b', 1));
+    $std->indIntermed = IndIntermed::from((int)self::tag((string)$parser->indIntermed, '', 'B25c', 0));
+    $std->procEmi     = ProcEmi::from((int)self::tag((string)$parser->procEmi, 'procEmi não informado', 'B26', 0));
+    $std->verProc     = self::tag((string) $parser->verProc, 'verProc não informado', 'B27', 1);
+    $std->dhCont      = self::tag((string) $parser->dhCont, '', 'B28', 0);
+    $std->xJust       = self::tag((string) $parser->xJust, 'xJust não informado', 'B29', 0);
 
     return $std;
   }
