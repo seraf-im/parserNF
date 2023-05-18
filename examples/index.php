@@ -52,6 +52,7 @@ $groups = ['A', 'B', 'BA', 'C', 'D', 'E', 'F', 'G', 'GA', 'H', 'I', 'I01', 'I03'
       </a>
       <hr>
       <ul class="nav nav-pills flex-column mb-auto" style="overflow: auto; flex-direction: column;flex-wrap: nowrap;">
+        <li class='nav-item'><a class='nav-link text-white' group='protocolo'>Protocolo</a></li>
         <?php foreach ($groups as $group) {
           echo "<li class='nav-item'><a class='nav-link text-white' group='$group'>Grupo $group</a></li>";
         }
