@@ -37,7 +37,7 @@ namespace Pnhs\ParserNF;
 
 use Exception;
 
-class Parser
+class parser
 {
   private object|bool $parser;
   private int $mod;
