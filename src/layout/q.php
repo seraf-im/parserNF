@@ -43,6 +43,9 @@ class q extends layout
   {
     $parser = $data->NFe->infNFe->det[$numero_item - 1]->imposto->PIS;
 
+    if (!$parser)
+      return $std;
+
     $group = key(get_object_vars($parser));
 
     self::$group($parser, $std);
