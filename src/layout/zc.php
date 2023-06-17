@@ -56,9 +56,9 @@ class zc extends layout
     foreach ($parser->forDia as $item) {
       $r[$i]['dia']       = self::tag((string) $item->dia, 'dia não informado', 'ZC05', 1);
       $r[$i]['qtde']      = self::tag((string) $item->qtde, 'qtde não informado', 'ZC06', 1);
-      $r[$i]['qTotMes']   = self::tag((string) $item->qTotMes, 'qTotMes não informado', 'ZC07', 0);
-      $r[$i]['qTotAnt']   = self::tag((string) $item->qTotAnt, 'qTotAnt não informado', 'ZC08', 0);
-      $r[$i]['qTotGer']   = self::tag((string) $item->qTotGer, 'qTotGer não informado', 'ZC09', 0);
+      $r[$i]['qTotMes']   = self::tag((string) $item->qTotMes, 'qTotMes não informado', 'ZC07', 1);
+      $r[$i]['qTotAnt']   = self::tag((string) $item->qTotAnt, 'qTotAnt não informado', 'ZC08', 1);
+      $r[$i]['qTotGer']   = self::tag((string) $item->qTotGer, 'qTotGer não informado', 'ZC09', 1);
       $i++;
     }
     $std->forDia = $r;
@@ -68,9 +68,9 @@ class zc extends layout
     foreach ($parser->deduc as $item) {
       $r[$i]['xDed']      = self::tag((string) $item->xDed, 'xDed não informado', 'ZC11', 1);
       $r[$i]['vDed']      = self::tag((string) $item->vDed, 'vDed não informado', 'ZC12', 1);
-      $r[$i]['vFor']      = self::tag((string) $item->vFor, 'vFor não informado', 'ZC13', 0);
-      $r[$i]['vTotDed']   = self::tag((string) $item->vTotDed, 'vTotDed não informado', 'ZC14', 0);
-      $r[$i]['vLiqFor']   = self::tag((string) $item->vLiqFor, 'vLiqFor não informado', 'ZC15', 0);
+      $r[$i]['vFor']      = self::tag((string) $item->vFor, 'vFor não informado', 'ZC13', 1);
+      $r[$i]['vTotDed']   = self::tag((string) $item->vTotDed, 'vTotDed não informado', 'ZC14', 1);
+      $r[$i]['vLiqFor']   = self::tag((string) $item->vLiqFor, 'vLiqFor não informado', 'ZC15', 1);
       $i++;
     }
     $std->deduc = $r;
