@@ -51,16 +51,18 @@ class ya extends layout
     $i = 0;
     //$r = null;
     foreach ($parser->detPag as $item) {
-      $r[$i]['indPag']    = self::tag((string) $item->indPag, 'indPag não informado', 'YA01b', 0);
-      $r[$i]['tPag']      = self::tag((string) $item->tPag, 'tPag não informado', 'YA02', 1);
-      $r[$i]['vPag']      = self::tag((string) $item->vPag, 'vPag não informado', 'YA03', 1);
-      $r[$i]['tpIntegra'] = self::tag((string) $item->card->tpIntegra, 'tpIntegra não informado', 'YA04a', 0);
-      $r[$i]['CNPJ']      = self::tag((string) $item->card->CNPJ, 'CNPJ não informado', 'YA05', 0);
-      $r[$i]['tBand']     = self::tag((string) $item->card->tBand, 'tBand não informado', 'YA06', 0);
-      $r[$i]['cAut']      = self::tag((string) $item->card->cAut, 'cAut não informado', 'YA07', 0);
+      $r[$i]['indPag']      = self::tag((string) $item->indPag, 'indPag não informado', 'YA01b', 0);
+      $r[$i]['tPag']        = self::tag((string) $item->tPag, 'tPag não informado', 'YA02', 1);
+      $r[$i]['vPag']        = self::tag((string) $item->vPag, 'vPag não informado', 'YA03', 1);
+      if (isset($item->card)) {
+        $r[$i]['tpIntegra'] = self::tag((string) $item->card->tpIntegra, 'tpIntegra não informado', 'YA04a', 1);
+        $r[$i]['CNPJ']      = self::tag((string) $item->card->CNPJ, 'CNPJ não informado', 'YA05', 0);
+        $r[$i]['tBand']     = self::tag((string) $item->card->tBand, 'tBand não informado', 'YA06', 0);
+        $r[$i]['cAut']      = self::tag((string) $item->card->cAut, 'cAut não informado', 'YA07', 0);
+      }
       $i++;
     }
-    $std->vTroco          = self::tag((string) $parser->vTroco, 'vTroco não informado', 'YA09', 0);
+    $std->vTroco            = self::tag((string) $parser->vTroco, 'vTroco não informado', 'YA09', 0);
 
     $std->detPag = $r;
 

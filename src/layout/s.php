@@ -89,10 +89,10 @@ class s extends layout
       $std->vBC           = self::tag((string) $parser->vBC, 'vBC não informado', 'S07', 1);
       $std->pCOFINS       = self::tag((string) $parser->pCOFINS, 'pCOFINS não informado', 'S08', 1);
     }
-    if ($parser->qBCProd || $parser->vAliqProd || $parser->vCOFINS) {
+    if ($parser->qBCProd || $parser->vAliqProd) {
       $std->qBCProd       = self::tag((string) $parser->qBCProd, 'qBCProd não informado', 'S09', 1);
       $std->vAliqProd     = self::tag((string) $parser->vAliqProd, 'vAliqProd não informado', 'S10', 1);
-      $std->vCOFINS       = self::tag((string) $parser->vCOFINS, 'vCOFINS não informado', 'S11', 1);
     }
+    $std->vCOFINS       = self::tag((string) $parser->vCOFINS, 'vCOFINS não informado', 'S11', 1);
   }
 }
