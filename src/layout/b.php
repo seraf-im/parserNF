@@ -81,8 +81,10 @@ class b extends layout
     $std->indIntermed = IndIntermed::from((int)self::tag((string)$parser->indIntermed, '', 'B25c', 0));
     $std->procEmi     = ProcEmi::from((int)self::tag((string)$parser->procEmi, 'procEmi não informado', 'B26', 0));
     $std->verProc     = self::tag((string) $parser->verProc, 'verProc não informado', 'B27', 1);
-    $std->dhCont      = self::tag((string) $parser->dhCont, '', 'B28', 0);
-    $std->xJust       = self::tag((string) $parser->xJust, 'xJust não informado', 'B29', 0);
+    if ($parser->dhCont || $parser->xJust) {
+      $std->dhCont    = self::tag((string) $parser->dhCont, '', 'B28', 1);
+      $std->xJust     = self::tag((string) $parser->xJust, 'xJust não informado', 'B29', 1);
+    }
 
     return $std;
   }
