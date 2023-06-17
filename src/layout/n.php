@@ -371,16 +371,16 @@ class n extends layout
 
     $std->orig            = IcmsOrig::from((int)self::tag((string) $parser->orig, 'orig não informado', 'N11', 1));
     $std->CST             = self::tag((string) $parser->CSOSN, 'CSOSN não informado', 'N12a', 1);
-    $std->modBCST         = IcmsModBcSt::from((int)self::tag((string) $parser->ICMS10->modBCST, 'modBCST não informado', 'N18', 1));
-    $std->pMVAST          = self::tag((string) $parser->ICMS10->pMVAST, 'pMVAST não informado', 'N19', 0);
-    $std->pRedBCST        = self::tag((string) $parser->ICMS10->pRedBCST, 'pRedBCST não informado', 'N20', 0);
-    $std->vBCST           = self::tag((string) $parser->ICMS10->vBCST, 'vBCST não informado', 'N21', 1);
-    $std->pICMSST         = self::tag((string) $parser->ICMS10->pICMSST, 'pICMSST não informado', 'N22', 1);
-    $std->vICMSST         = self::tag((string) $parser->ICMS10->vICMSST, 'vICMSST não informado', 'N23', 1);
-    if ($parser->ICMS10->vBCFCPST || $parser->ICMS10->pFCPST || $parser->ICMS10->vFCPST) {
-      $std->vBCFCPST      = self::tag((string) $parser->ICMS10->vBCFCPST, 'vBCFCPST não informado', 'N23a', 1);
-      $std->pFCPST        = self::tag((string) $parser->ICMS10->pFCPST, 'pFCPST não informado', 'N23b', 1);
-      $std->vFCPST        = self::tag((string) $parser->ICMS10->vFCPST, 'vFCPST não informado', 'N23d', 1);
+    $std->modBCST         = IcmsModBcSt::from((int)self::tag((string) $parser->modBCST, 'modBCST não informado', 'N18', 1));
+    $std->pMVAST          = self::tag((string) $parser->pMVAST, 'pMVAST não informado', 'N19', 0);
+    $std->pRedBCST        = self::tag((string) $parser->pRedBCST, 'pRedBCST não informado', 'N20', 0);
+    $std->vBCST           = self::tag((string) $parser->vBCST, 'vBCST não informado', 'N21', 1);
+    $std->pICMSST         = self::tag((string) $parser->pICMSST, 'pICMSST não informado', 'N22', 1);
+    $std->vICMSST         = self::tag((string) $parser->vICMSST, 'vICMSST não informado', 'N23', 1);
+    if ($parser->vBCFCPST || $parser->pFCPST || $parser->vFCPST) {
+      $std->vBCFCPST      = self::tag((string) $parser->vBCFCPST, 'vBCFCPST não informado', 'N23a', 1);
+      $std->pFCPST        = self::tag((string) $parser->pFCPST, 'pFCPST não informado', 'N23b', 1);
+      $std->vFCPST        = self::tag((string) $parser->vFCPST, 'vFCPST não informado', 'N23d', 1);
     }
     $std->pCredSN         = self::tag((string) $parser->pCredSN, 'pCredSN não informado', 'N29', 1);
     $std->vCredICMSSN     = self::tag((string) $parser->vCredICMSSN, 'vCredICMSSN não informado', 'N30', 1);
@@ -388,32 +388,30 @@ class n extends layout
 
   private static function ICMSSN202($parser, $std): void
   {
-    $parser = $parser->ICMSSN300;
+    $parser = $parser->ICMSSN202;
     self::ICMSSN202203($parser, $std);
   }
 
   private static function ICMSSN203($parser, $std): void
   {
-    $parser = $parser->ICMSSN400;
+    $parser = $parser->ICMSSN203;
     self::ICMSSN202203($parser, $std);
   }
 
   private static function ICMSSN202203($parser, $std): void
   {
-    $parser = $parser->ICMSSN202;
-
     $std->orig            = IcmsOrig::from((int)self::tag((string) $parser->orig, 'orig não informado', 'N11', 1));
     $std->CST             = self::tag((string) $parser->CSOSN, 'CSOSN não informado', 'N12a', 1);
-    $std->modBCST         = IcmsModBcSt::from((int)self::tag((string) $parser->ICMS10->modBCST, 'modBCST não informado', 'N18', 1));
-    $std->pMVAST          = self::tag((string) $parser->ICMS10->pMVAST, 'pMVAST não informado', 'N19', 0);
-    $std->pRedBCST        = self::tag((string) $parser->ICMS10->pRedBCST, 'pRedBCST não informado', 'N20', 0);
-    $std->vBCST           = self::tag((string) $parser->ICMS10->vBCST, 'vBCST não informado', 'N21', 1);
-    $std->pICMSST         = self::tag((string) $parser->ICMS10->pICMSST, 'pICMSST não informado', 'N22', 1);
-    $std->vICMSST         = self::tag((string) $parser->ICMS10->vICMSST, 'vICMSST não informado', 'N23', 1);
-    if ($parser->ICMS10->vBCFCPST || $parser->ICMS10->pFCPST || $parser->ICMS10->vFCPST) {
-      $std->vBCFCPST      = self::tag((string) $parser->ICMS10->vBCFCPST, 'vBCFCPST não informado', 'N23a', 1);
-      $std->pFCPST        = self::tag((string) $parser->ICMS10->pFCPST, 'pFCPST não informado', 'N23b', 1);
-      $std->vFCPST        = self::tag((string) $parser->ICMS10->vFCPST, 'vFCPST não informado', 'N23d', 1);
+    $std->modBCST         = IcmsModBcSt::from((int)self::tag((string) $parser->modBCST, 'modBCST não informado', 'N18', 1));
+    $std->pMVAST          = self::tag((string) $parser->pMVAST, 'pMVAST não informado', 'N19', 0);
+    $std->pRedBCST        = self::tag((string) $parser->pRedBCST, 'pRedBCST não informado', 'N20', 0);
+    $std->vBCST           = self::tag((string) $parser->vBCST, 'vBCST não informado', 'N21', 1);
+    $std->pICMSST         = self::tag((string) $parser->pICMSST, 'pICMSST não informado', 'N22', 1);
+    $std->vICMSST         = self::tag((string) $parser->vICMSST, 'vICMSST não informado', 'N23', 1);
+    if ($parser->vBCFCPST || $parser->pFCPST || $parser->vFCPST) {
+      $std->vBCFCPST      = self::tag((string) $parser->vBCFCPST, 'vBCFCPST não informado', 'N23a', 1);
+      $std->pFCPST        = self::tag((string) $parser->pFCPST, 'pFCPST não informado', 'N23b', 1);
+      $std->vFCPST        = self::tag((string) $parser->vFCPST, 'vFCPST não informado', 'N23d', 1);
     }
   }
 

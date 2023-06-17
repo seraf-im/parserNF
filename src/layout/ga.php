@@ -58,7 +58,7 @@ class ga extends layout
 
       $std->CNPJ  = self::tag((string) $item->CNPJ, 'CNPJ não informado', 'GA02', 0);
       $std->CPF   = self::tag((string) $item->CPF, 'CPF não informado', 'GA03', 0);
-      if (!($parser->CNPJ || $parser->CPF)) self::tag((string) $item->CNPJ, 'CNPJ não informado', 'GA02', 1);
+      if (!($item->CNPJ || $item->CPF)) self::tag((string) $item->CNPJ, 'CNPJ não informado', 'GA02', 1);
 
       $return[$i] = $std;
       $i++;
