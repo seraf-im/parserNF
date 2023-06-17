@@ -65,7 +65,7 @@ class i03 extends layout
 
   private static function exportInd(object $parser, array $r): array
   {
-    $r['nRE']                = self::tag((string) $parser->nRE, 'nRE não informado', 'I53', 0);
+    $r['nRE']                = self::tag((string) $parser->nRE, 'nRE não informado', 'I53', 1);
     $r['chNFe']              = self::tag((string) $parser->chNFe, 'chNFe não informado', 'I54', 1);
     $r['qExport']            = self::tag((string) $parser->qExport, 'qExport não informado', 'I55', 1);
 
