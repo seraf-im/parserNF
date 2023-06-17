@@ -119,9 +119,9 @@ class x extends layout
       $r[$i]['pesoB']     = self::tag((string) $item->pesoB, 'pesoB não informado', 'X32', 0);
       if ($item->lacres)
         $r[$i]['lacres']  = self::lacres($item->lacres);
-      $std->vol->$i = $r;
       $i++;
     }
+    $std->vol = $r;
   }
 
   private static function lacres($parser): array

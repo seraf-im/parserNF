@@ -48,17 +48,17 @@ class y extends layout
     if (!$parser)
       return $std;
 
-    $std->nFat            = self::tag((string) $parser->fat->nFat, 'nFat não informado', 'Y03', 1);
-    $std->vOrig           = self::tag((string) $parser->fat->vOrig, 'vOrig não informado', 'Y04', 1);
-    $std->vDesc           = self::tag((string) $parser->fat->vDesc, 'vDesc não informado', 'Y05', 1);
-    $std->vLiq            = self::tag((string) $parser->fat->vLiq, 'vLiq não informado', 'Y06', 1);
+    $std->nFat            = self::tag((string) $parser->fat->nFat, 'nFat não informado', 'Y03', 0);
+    $std->vOrig           = self::tag((string) $parser->fat->vOrig, 'vOrig não informado', 'Y04', 0);
+    $std->vDesc           = self::tag((string) $parser->fat->vDesc, 'vDesc não informado', 'Y05', 0);
+    $std->vLiq            = self::tag((string) $parser->fat->vLiq, 'vLiq não informado', 'Y06', 0);
 
     $i = 0;
     $r = [];
     foreach ($parser->dup as $item) {
-      $r[$i]['nDup']      = self::tag((string) $item->nDup, 'nDup não informado', 'Y08', 1);
-      $r[$i]['dVenc']     = self::tag((string) $item->dVenc, 'dVenc não informado', 'Y09', 1);
-      $r[$i]['vDup']      = self::tag((string) $item->vDup, 'vDup não informado', 'Y10', 0);
+      $r[$i]['nDup']      = self::tag((string) $item->nDup, 'nDup não informado', 'Y08', 0);
+      $r[$i]['dVenc']     = self::tag((string) $item->dVenc, 'dVenc não informado', 'Y09', 0);
+      $r[$i]['vDup']      = self::tag((string) $item->vDup, 'vDup não informado', 'Y10', 1);
       $i++;
     }
 
