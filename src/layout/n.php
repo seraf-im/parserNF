@@ -176,7 +176,7 @@ class n extends layout
     $std->vICMSOp         = self::tag((string) $parser->vICMSOp, 'vICMSOP não informado', 'N16a', 0);
     $std->pDif            = self::tag((string) $parser->pDif, 'pDif não informado', 'N16b', 0);
     $std->vICMSDif        = self::tag((string) $parser->vICMSDif, 'vICMSDif não informado', 'N16c', 0);
-    $std->vICMS           = self::tag((string) $parser->vICMS, 'vICMS não informado', 'N17', 1);
+    $std->vICMS           = self::tag((string) $parser->vICMS, 'vICMS não informado', 'N17', 0);
     if ($parser->pFCP || $parser->vFCP || $parser->vBCFCP) {
       $std->vBCFCP        = self::tag((string) $parser->vBCFCP, 'vBCFCP não informado', 'N17a', 1);
       $std->pFCP          = self::tag((string) $parser->pFCP, 'pFCP não informado', 'N17b', 1);
