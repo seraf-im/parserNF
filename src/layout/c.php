@@ -49,6 +49,7 @@ class c extends layout
 
     $std->CNPJ    = self::tag((string) $parser->CNPJ, 'CNPJ não informado', 'C02', 0);
     $std->CPF     = self::tag((string) $parser->CPF, 'CPF não informado', 'C02a', 0);
+    if (!($parser->CNPJ || $parser->CPF)) self::tag((string) $parser->CNPJ, 'CNPJ não informado', 'C02', 1);
     $std->xNome   = self::tag((string) $parser->xNome, 'xNome não informado', 'C03', 1);
     $std->xFant   = self::tag((string) $parser->xFant, 'xFant não informado', 'C04', 0);
     if ($parser->enderEmit) self::enderEmit($parser->enderEmit, $std);
@@ -76,9 +77,8 @@ class c extends layout
 
   private static function imOrCnae(object $parser, stdClass $std): void
   {
-    if ($parser->IM || $parser->CNAE) {
-      $std->IM    = self::tag((string) $parser->IM, 'IM não informado', 'C19', 1);
-      $std->CNAE  = self::tag((string) $parser->CNAE, 'CNAE não informado', 'C20', 1);
-    }
+    $std->IM    = self::tag((string) $parser->IM, 'IM não informado', 'C19', 0);
+    if ($parser->CNAE) self::tag((string) $parser->IM, 'IM não informado', 'C19', 1);
+    $std->CNAE  = self::tag((string) $parser->CNAE, 'CNAE não informado', 'C20', 0);
   }
 }
