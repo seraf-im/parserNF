@@ -50,7 +50,7 @@ class e extends layout
     $std->CNPJ    = self::tag((string) $parser->CNPJ, 'CNPJ não informado', 'E02', 0);
     $std->CPF    = self::tag((string) $parser->CPF, 'CPF não informado', 'E03', 0);
     $std->idEstrangeiro    = self::tag((string) $parser->idEstrangeiro, 'idEstrangeiro não informado', 'E03a', 0);
-    $std->xNome    = self::tag((string) $parser->xNome, 'xNome não informado', 'E04', 1);
+    $std->xNome    = self::tag((string) $parser->xNome, 'xNome não informado', 'E04', 0);
     if ($parser->enderDest) self::enderDest($parser->enderDest, $std);
     $std->indIEDest    = self::tag((string) $parser->indIEDest, 'indIEDest não informado', 'E16a', 1);
     $std->IE    = self::tag((string) $parser->IE, 'IE não informado', 'E17', 0);
