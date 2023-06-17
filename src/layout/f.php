@@ -47,8 +47,9 @@ class f extends layout
     if (!$parser)
       return $std;
 
-    $std->CNPJ    = self::tag((string) $parser->CNPJ, 'CNPJ não informado', 'F02', 1);
-    $std->CPF     = self::tag((string) $parser->CPF, 'CPF não informado', 'F02a', 1);
+    $std->CNPJ    = self::tag((string) $parser->CNPJ, 'CNPJ não informado', 'F02', 0);
+    $std->CPF     = self::tag((string) $parser->CPF, 'CPF não informado', 'F02a', 0);
+    if (!($parser->CNPJ || $parser->CPF)) self::tag((string) $parser->CNPJ, 'CNPJ não informado', 'F02', 1);
     $std->xNome   = self::tag((string) $parser->xNome, 'xNome não informado', 'F02b', 0);
     $std->xLgr    = self::tag((string) $parser->xLgr, 'xLgr não informado', 'F03', 1);
     $std->nro     = self::tag((string) $parser->nro, 'nro não informado', 'F04', 1);
