@@ -44,7 +44,7 @@ class i extends layout
     $parser = $data->xpath("//NFe//det[@nItem = {$nItem}]//prod")[0];
 
     $std->cProd     = self::tag((string) $parser->cProd, 'cProd não informado', 'I02', 1);
-    $std->cEAN      = self::tag((string) $parser->cEAN, 'cEAN não informado', 'I03', 1);
+    $std->cEAN      = self::tag((string) $parser->cEAN == 'SEM GTIN' ? '' : $parser->cEAN, 'cEAN não informado', 'I03', 1);
     $std->xProd     = self::tag((string) $parser->xProd, 'xProd não informado', 'I04', 1);
     $std->NCM       = self::tag((string) $parser->NCM, 'NCM não informado', 'I05', 1);
     self::nve($parser->NVE, $std);
@@ -58,7 +58,7 @@ class i extends layout
     $std->qCom      = self::tag((string) $parser->qCom, 'qCom não informado', 'I10', 1);
     $std->vUnCom    = self::tag((string) $parser->vUnCom, 'vUnCom não informado', 'I10a', 1);
     $std->vProd     = self::tag((string) $parser->vProd, 'vProd não informado', 'I11', 1);
-    $std->cEANTrib  = self::tag((string) $parser->cEANTrib, 'cEANTrib não informado', 'I12', 1);
+    $std->cEANTrib  = self::tag((string) $parser->cEANTrib == 'SEM GTIN' ? '' : $parser->cEANTrib, 'cEANTrib não informado', 'I12', 1);
     $std->uTrib     = self::tag((string) $parser->uTrib, 'uTrib não informado', 'I13', 1);
     $std->qTrib     = self::tag((string) $parser->qTrib, 'qTrib não informado', 'I14', 1);
     $std->vUnTrib   = self::tag((string) $parser->vUnTrib, 'vUnTrib não informado', 'I14a', 1);
