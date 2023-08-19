@@ -22,5 +22,13 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=8.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.15"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }
