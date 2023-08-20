@@ -358,13 +358,13 @@ class NFe
                     'vBCEfet'           => $icms->vBCEfet,
                     'pICMSEfet'         => $icms->pICMSEfet,
                     'vICMSEfet'         => $icms->vICMSEfet
-                ],
-                "impostoDevol"          => [
-                    "pDevol"            => null,
-                    "vIPIDevol"         => null
-                ],
-                "infAdProd"             => $infAdProd
-            ]
+                ]
+            ],
+            "impostoDevol"          => [
+                "pDevol"            => null,
+                "vIPIDevol"         => null
+            ],
+            "infAdProd"             => $infAdProd
         ]);
 
         //ICMSTot_vBC
