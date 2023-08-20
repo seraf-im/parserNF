@@ -96,13 +96,13 @@ class NFe
     private Decimal $ISSQNtot_vISS;
     private Decimal $ISSQNtot_vPIS;
     private Decimal $ISSQNtot_vCOFINS;
-    private Decimal $ISSQNtot_dCompet;
+    private ?string $ISSQNtot_dCompet = null;
     private Decimal $ISSQNtot_vDeducao;
     private Decimal $ISSQNtot_vOutro;
     private Decimal $ISSQNtot_vDescIncond;
     private Decimal $ISSQNtot_vDescCond;
     private Decimal $ISSQNtot_vISSRet;
-    private Decimal $ISSQNtot_cRegTrib;
+    private ?string $ISSQNtot_cRegTrib = null;
 
     private Decimal $retTrib_vRetPIS;
     private Decimal $retTrib_vRetCOFINS;
@@ -145,13 +145,11 @@ class NFe
         $this->ISSQNtot_vISS = new Decimal("0", 2);
         $this->ISSQNtot_vPIS = new Decimal("0", 2);
         $this->ISSQNtot_vCOFINS = new Decimal("0", 2);
-        $this->ISSQNtot_dCompet = new Decimal("0", 2);
         $this->ISSQNtot_vDeducao = new Decimal("0", 2);
         $this->ISSQNtot_vOutro = new Decimal("0", 2);
         $this->ISSQNtot_vDescIncond = new Decimal("0", 2);
         $this->ISSQNtot_vDescCond = new Decimal("0", 2);
         $this->ISSQNtot_vISSRet = new Decimal("0", 2);
-        $this->ISSQNtot_cRegTrib = new Decimal("0", 2);
         $this->retTrib_vRetPIS = new Decimal("0", 2);
         $this->retTrib_vRetCOFINS = new Decimal("0", 2);
         $this->retTrib_vRetCSLL = new Decimal("0", 2);
@@ -194,9 +192,9 @@ class NFe
         $this->calc();
     }
 
-    public function result(): string
+    public function result(): array
     {
-        return json_encode([
+        return ([
             "prod"                  => $this->prod,
             "total"                 => [
                 "ICMSTot"           => [
@@ -230,13 +228,13 @@ class NFe
                     "vISS"          => $this->ISSQNtot_vISS->result(),
                     "vPIS"          => $this->ISSQNtot_vPIS->result(),
                     "vCOFINS"       => $this->ISSQNtot_vCOFINS->result(),
-                    "dCompet"       => $this->ISSQNtot_dCompet->result(),
+                    "dCompet"       => $this->ISSQNtot_dCompet,
                     "vDeducao"      => $this->ISSQNtot_vDeducao->result(),
                     "vOutro"        => $this->ISSQNtot_vOutro->result(),
                     "vDescIncond"   => $this->ISSQNtot_vDescIncond->result(),
                     "vDescCond"     => $this->ISSQNtot_vDescCond->result(),
                     "vISSRet"       => $this->ISSQNtot_vISSRet->result(),
-                    "cRegTrib"      => $this->ISSQNtot_cRegTrib->result()
+                    "cRegTrib"      => $this->ISSQNtot_cRegTrib
                 ],
                 "retTrib"           => [
                     "vRetPIS"       => $this->retTrib_vRetPIS->result(),
@@ -257,9 +255,9 @@ class NFe
         Prod $prod,
         mixed $DI = null,
         mixed $detExport = null,
-        mixed $xPed = null,
-        mixed $nItemPed = null,
-        mixed $nFCI = null,
+        ?string $xPed = null,
+        ?int $nItemPed = null,
+        ?string $nFCI = null,
         mixed $rastro = null,
         mixed $veicProd = null,
         mixed $med = null,
@@ -276,7 +274,7 @@ class NFe
         mixed $cofinsSt = null,
         mixed $issqn = null,
         mixed $impostoDevol = null,
-        mixed $infAdProd = null
+        ?string $infAdProd = null
     ): void {
         $this->vProd->sum($prod->vProd);
 
@@ -307,15 +305,15 @@ class NFe
             'indTot'                    => $prod->indTot,
             'DI'                        => null,
             'detExport'                 => null,
-            'xPed'                      => null,
-            'nItemPed'                  => null,
-            'nFCI'                      => null,
+            'xPed'                      => $xPed,
+            'nItemPed'                  => $nItemPed,
+            'nFCI'                      => $nFCI,
             'rastro'                    => null,
             'veicProd'                  => null,
             'med'                       => null,
             'arma'                      => null,
             'comb'                      => null,
-            'nRECOPI'                   => null,
+            'nRECOPI'                   => $nRECOPI,
             'imposto'                   => [
                 'vTotTrib'              => null,
                 'ICMS'                  => [
@@ -360,7 +358,12 @@ class NFe
                     'vBCEfet'           => $icms->vBCEfet,
                     'pICMSEfet'         => $icms->pICMSEfet,
                     'vICMSEfet'         => $icms->vICMSEfet
-                ]
+                ],
+                "impostoDevol"          => [
+                    "pDevol"            => null,
+                    "vIPIDevol"         => null
+                ],
+                "infAdProd"             => $infAdProd
             ]
         ]);
 
@@ -422,7 +425,17 @@ class NFe
         //ICMSTot_vOutro
         $this->ICMSTot_vOutro->sum($prod->vOutro);
 
-        // // //ICMSTot_vNF
+        //ICMSTot_vNF
+        $this->ICMSTot_vNF
+        ->sum($prod->vProd)
+        ->sub($prod->vDesc)
+        ->sub($icms->vICMSDeson)
+        ->sum($icms->vBCST)
+        ->sum($prod->vFrete)
+        ->sum($prod->vSeg)
+        ->sum($prod->vOutro);
+        //+ valor_total_ii + valor_ipi + valor_total_servicos
+
         // // //ICMSTot_vTotTrib
         // // //ISSQNtot_vServ
         // // //ISSQNtot_vBC
@@ -444,7 +457,10 @@ class NFe
         // // //retTrib_vBCRetPrev
         // // //retTrib_vRetPrev
 
-        // vNF = valor_produtos – valor_desconto – icms_valor_total_desonerado + icms_valor_total_st + valor_frete + valor_seguro + valor_outras_despesas + valor_total_ii + valor_ipi + valor_total_servicos
+        // vNF = valor_produtos – valor_desconto – icms_valor_total_desonerado + icms_valor_total_st
+        // + valor_frete + valor_seguro + valor_outras_despesas + valor_total_ii + valor_ipi + valor_total_servicos
+
+        $this->calc();
     }
 
     private function setDetPag(DetPag $detPag): void
