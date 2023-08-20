@@ -21,14 +21,19 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": ">=8.0"
+        "php": ">=8.1",
+        "php-decimal/php-decimal": "^1.1"
     },
     "require-dev": {
-        "pestphp/pest": "^2.15"
+        "pestphp/pest": "^2.15",
+        "squizlabs/php_codesniffer": "*"
     },
     "config": {
         "allow-plugins": {
             "pestphp/pest-plugin": true
         }
+    },
+    "scripts": {
+        "test": "pest"
     }
 }
