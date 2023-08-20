@@ -368,15 +368,21 @@ class NFe
         ]);
 
         //ICMSTot_vBC
-        $this->ICMSTot_vBC->sum($icms->vBC);
+        if (!is_null($icms->vBC)) {
+            $this->ICMSTot_vBC->sum($icms->vBC);
+        }
 
         //ICMSTot_vICMS
         if (!($icms->CST == '40' || $icms->CST == '41' || $icms->CST == '50')) {
-            $this->ICMSTot_vICMS->sum($icms->vICMS);
+            if (!is_null($icms->vICMS)) {
+                $this->ICMSTot_vICMS->sum($icms->vICMS);
+            }
         }
 
         //ICMSTot_vICMSDeson
-        $this->ICMSTot_vICMSDeson->sum($icms->vICMSDeson);
+        if (!is_null($icms->vICMSDeson)) {
+            $this->ICMSTot_vICMSDeson->sum($icms->vICMSDeson);
+        }
 
         // //ICMSTot_vFCPUFDest
         // $this->ICMSTot_vICMSDeson->sum($icms->ICMSTot_vICMSDeson);
@@ -388,19 +394,27 @@ class NFe
         // $this->ICMSTot_vICMSDeson->sum($icms->ICMSTot_vICMSDeson);
 
         //ICMSTot_vFCP
-        $this->ICMSTot_vFCP->sum($icms->vFCP);
+        if (!is_null($icms->vFCP)) {
+            $this->ICMSTot_vFCP->sum($icms->vFCP);
+        }
 
         //ICMSTot_vBCST
-        $this->ICMSTot_vBCST->sum($icms->vBCST);
+        if (!is_null($icms->vBCST)) {
+            $this->ICMSTot_vBCST->sum($icms->vBCST);
+        }
 
         // //ICMSTot_vST
         // $this->ICMSTot_vST->sum($icms->vST);
 
         //ICMSTot_vFCPST
-        $this->ICMSTot_vFCPST->sum($icms->vFCPST);
+        if (!is_null($icms->vFCPST)) {
+            $this->ICMSTot_vFCPST->sum($icms->vFCPST);
+        }
 
         //ICMSTot_vFCPSTRet
-        $this->ICMSTot_vFCPSTRet->sum($icms->vFCPSTRet);
+        if (!is_null($icms->vFCPSTRet)) {
+            $this->ICMSTot_vFCPSTRet->sum($icms->vFCPSTRet);
+        }
 
         //ICMSTot_vProd
         if ($prod->indTot) {
@@ -408,13 +422,19 @@ class NFe
         }
 
         //ICMSTot_vFrete
-        $this->ICMSTot_vFrete->sum($prod->vFrete);
+        if (!is_null($prod->vFrete)) {
+            $this->ICMSTot_vFrete->sum($prod->vFrete);
+        }
 
         //ICMSTot_vSeg
-        $this->ICMSTot_vSeg->sum($prod->vSeg);
+        if (!is_null($prod->vSeg)) {
+            $this->ICMSTot_vSeg->sum($prod->vSeg);
+        }
 
         //ICMSTot_vDesc
-        $this->ICMSTot_vDesc->sum($prod->vDesc);
+        if (!is_null($prod->vDesc)) {
+            $this->ICMSTot_vDesc->sum($prod->vDesc);
+        }
 
         // // //ICMSTot_vII
         // // //ICMSTot_vIPI
@@ -423,7 +443,9 @@ class NFe
         // // //ICMSTot_vCOFINS
 
         //ICMSTot_vOutro
-        $this->ICMSTot_vOutro->sum($prod->vOutro);
+        if (!is_null($prod->vOutro)) {
+            $this->ICMSTot_vOutro->sum($prod->vOutro);
+        }
 
         //ICMSTot_vNF
         $this->ICMSTot_vNF
