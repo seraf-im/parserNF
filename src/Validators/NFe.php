@@ -449,13 +449,13 @@ class NFe
 
         //ICMSTot_vNF
         $this->ICMSTot_vNF
-        ->sum($prod->vProd)
-        ->sub($prod->vDesc)
-        ->sub($icms->vICMSDeson)
-        ->sum($icms->vBCST)
-        ->sum($prod->vFrete)
-        ->sum($prod->vSeg)
-        ->sum($prod->vOutro);
+        ->sum($prod->vProd ?? "0")
+        ->sub($prod->vDesc ?? "0")
+        ->sub($icms->vICMSDeson ?? "0")
+        ->sum($icms->vBCST ?? "0")
+        ->sum($prod->vFrete ?? "0")
+        ->sum($prod->vSeg ?? "0")
+        ->sum($prod->vOutro ?? "0");
         //+ valor_total_ii + valor_ipi + valor_total_servicos
 
         // // //ICMSTot_vTotTrib
