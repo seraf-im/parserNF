@@ -44,7 +44,7 @@ class NFe
     private mixed $ide;
     private mixed $NFref;
     private mixed $emit;
-    private mixed $dest;
+    private mixed $dest = null;
     private mixed $retirada;
     private mixed $entrega;
     private mixed $autXML;
@@ -195,6 +195,7 @@ class NFe
     public function result(): array
     {
         return ([
+            "dest"                  => $this->dest,
             "prod"                  => $this->prod,
             "total"                 => [
                 "ICMSTot"           => [
@@ -566,11 +567,11 @@ class NFe
 
         foreach ($this->prod as $prod) {
             $vTroco
-            ->sub($prod['vProd'])
-            ->sub($prod['vFrete'])
-            ->sub($prod['vSeg'])
-            ->sum($prod['vDesc'])
-            ->sub($prod['vOutro']);
+            ->sub($prod['vProd'] ?? "0")
+            ->sub($prod['vFrete'] ?? "0")
+            ->sub($prod['vSeg'] ?? "0")
+            ->sum($prod['vDesc'] ?? "0")
+            ->sub($prod['vOutro'] ?? "0");
         }
 
         foreach ($this->detPag as $detPag) {
@@ -583,6 +584,32 @@ class NFe
 
     private function setProd(): void
     {
+    }
+
+    private function setDest(Dest $dest): void
+    {
+        $this->dest = [
+            'CNPJ'          => $dest->CNPJ,
+            'CPF'           => $dest->CPF ?? null,
+            'idEstrangeiro' => $dest->idEstrangeiro ?? null,
+            'xNome'         => $dest->xNome ?? null,
+            'xLgr'          => $dest->xLgr ?? null,
+            'nro'           => $dest->nro ?? null,
+            'xCpl'          => $dest->xCpl ?? null,
+            'xBairro'       => $dest->xBairro ?? null,
+            'cMun'          => $dest->cMun ?? null,
+            'xMun'          => $dest->xMun ?? null,
+            'UF'            => $dest->UF ?? null,
+            'CEP'           => $dest->CEP ?? null,
+            'cPais'         => $dest->cPais ?? null,
+            'xPais'         => $dest->xPais ?? null,
+            'fone'          => $dest->fone ?? null,
+            'indIEDest'     => $dest->indIEDest ?? null,
+            'IE'            => $dest->IE ?? null,
+            'ISUF'          => $dest->ISUF ?? null,
+            'IM'            => $dest->IM ?? null,
+            'email'         => $dest->email ?? null
+        ];
     }
 
     private function setVTroco(): void
