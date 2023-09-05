@@ -44,7 +44,7 @@ class NFe
     private mixed $ide;
     private mixed $NFref;
     private mixed $emit;
-    private mixed $dest = null;
+    private mixed $dest = [];
     private mixed $retirada;
     private mixed $entrega;
     private mixed $autXML;
