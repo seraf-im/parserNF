@@ -580,6 +580,7 @@ class NFe
         }
 
         $this->vTroco = $vTroco->result();
+        $this->ICMSTot_vDesc->sum($this->vDesc);
     }
 
     private function setProd(): void
