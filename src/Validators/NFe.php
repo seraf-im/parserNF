@@ -188,8 +188,8 @@ class NFe
             $this->$method($value);
         } else {
             $this->$name = $value;
+            $this->calc();
         }
-        $this->calc();
     }
 
     public function result(): array
@@ -543,6 +543,7 @@ class NFe
                 $mul->div($this->vProd->result());
                 $this->prod[$key]['vDesc'] = $mul->result();
                 $vDescRest->sub($mul->result());
+                $this->ICMSTot_vNF->sub($mul->result() ?? "0");
             }
             if ($vDescRest->result() !== "0.00") {
                 $this->prod[$count - 1]['vDesc'] = (new Decimal($this->prod[$count - 1]['vDesc'], 2))
