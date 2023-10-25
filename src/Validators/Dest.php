@@ -55,7 +55,7 @@ class Dest
     private ?int $cMun = null;
     private ?string $xMun = null;
     private ?string $UF = null;
-    private ?int $CEP = null;
+    private ?string $CEP = null;
     private ?int $cPais = null;
     private ?string $xPais = null;
     private ?string $fone = null;
