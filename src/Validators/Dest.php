@@ -59,7 +59,7 @@ class Dest
     private ?int $cPais = null;
     private ?string $xPais = null;
     private ?string $fone = null;
-    private int $indIEDest = 9;
+    private string $indIEDest = '9';
     private ?string $IE = null;
     private ?string $ISUF = null;
     private ?string $IM = null;

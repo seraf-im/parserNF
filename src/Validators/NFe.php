@@ -580,7 +580,12 @@ class NFe
             ->sum($detPag['vPag']);
         }
 
-        $this->vTroco = $vTroco->result();
+        $vTroco = $vTroco->result();
+        if ($vTroco > 0) {
+            $this->vTroco = $vTroco;
+        } else {
+            $this->vTroco = "0";
+        }
         $this->ICMSTot_vDesc->sum($this->vDesc);
     }
 
