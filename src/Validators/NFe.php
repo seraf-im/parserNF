@@ -188,7 +188,7 @@ class NFe
             $this->$method($value);
         } else {
             $this->$name = $value;
-            $this->calc();
+            // $this->calc();
         }
     }
 
@@ -513,6 +513,7 @@ class NFe
                 $mul->div($this->vProd->result());
                 $this->prod[$key]['vFrete'] = $mul->result();
                 $vFreteRest->sub($mul->result());
+                $this->ICMSTot_vNF->sum($mul->result() ?? "0");
             }
             if ($vFreteRest->result() !== "0.00") {
                 $this->prod[$count - 1]['vFrete'] = (new Decimal($this->prod[$count - 1]['vFrete'], 2))
@@ -586,7 +587,10 @@ class NFe
         } else {
             $this->vTroco = "0";
         }
+        $this->ICMSTot_vFrete->sum($this->vFrete);
+        $this->ICMSTot_vSeg->sum($this->vSeg);
         $this->ICMSTot_vDesc->sum($this->vDesc);
+        $this->ICMSTot_vOutro->sum($this->vOutro);
     }
 
     private function setProd(): void
