@@ -188,12 +188,12 @@ class NFe
             $this->$method($value);
         } else {
             $this->$name = $value;
-            // $this->calc();
         }
     }
 
     public function result(): array
     {
+        $this->calc();
         return ([
             "dest"                  => $this->dest,
             "prod"                  => $this->prod,
@@ -482,8 +482,6 @@ class NFe
 
         // vNF = valor_produtos – valor_desconto – icms_valor_total_desonerado + icms_valor_total_st
         // + valor_frete + valor_seguro + valor_outras_despesas + valor_total_ii + valor_ipi + valor_total_servicos
-
-        $this->calc();
     }
 
     private function setDetPag(DetPag $detPag): void
@@ -546,7 +544,7 @@ class NFe
                 $vDescRest->sub($mul->result());
                 $this->ICMSTot_vNF->sub($mul->result() ?? "0");
             }
-            if ($vDescRest->result() !== "0.00") {
+            if ($vDescRest->result() !== "0.00" && isset($this->prod[$count - 1]['vDesc'])) {
                 $this->prod[$count - 1]['vDesc'] = (new Decimal($this->prod[$count - 1]['vDesc'], 2))
                 ->sum($vDescRest->result())->result();
             }
