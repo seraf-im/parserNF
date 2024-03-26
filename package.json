@@ -1,5 +1,5 @@
 {
     "name": "parser_nf",
-    "version": "24.3.2",
+    "version": "24.3.3",
     "description": "O parserNF é uma biblioteca de código aberto para facilitar a importação de Notas Fiscal Modelo 55 e 65."
 }

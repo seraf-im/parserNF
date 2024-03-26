@@ -106,7 +106,7 @@ class DetPag
         }
     }
 
-    private function setCnpj(string $value): void
+    private function setCNPJ(string $value): void
     {
 
         if ((new CNPJ())->run($value)) {
