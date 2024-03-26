@@ -3,6 +3,7 @@
     "description": "Biblioteca faz a conversão do xml de nf-e e nfc-e brasileira para um objeto PHP, com a intenção de facilitar a importação para o sistema.",
     "type": "library",
     "license": "MIT",
+    "version": "24.3.0",
     "autoload": {
         "psr-4": {
             "Pnhs\\ParserNF\\": "src/"
