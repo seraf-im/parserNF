@@ -35,11 +35,8 @@ declare(strict_types=1);
 
 namespace Pnhs\ParserNF\Validators;
 
-use Pnhs\ParserNF\Utils\Decimal;
-use Pnhs\ParserNF\Utils\CNPJ;
-
 /**
- * Grupo YA. Informações de Pagamento
+ * Grupo E. Identificação do Destinatário da Nota Fiscal eletrônica
  */
 class Dest
 {
@@ -101,12 +98,4 @@ class Dest
             $this->$name = $value;
         }
     }
-
-    // private function setCnpj(string $value): void
-    // {
-
-    //     if ((new CNPJ())->run($value)) {
-    //         $this->CNPJ = $value;
-    //     }
-    // }
 }
