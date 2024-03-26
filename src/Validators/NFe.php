@@ -195,10 +195,16 @@ class NFe
     {
         $this->calc();
         return ([
-            "dest"                  => $this->dest,
-            "prod"                  => $this->prod,
-            "total"                 => [
-                "ICMSTot"           => [
+            "ide"                   => $this->ide, //B
+            //BA
+            "emit"                  => $this->emit, //C
+            "dest"                  => $this->dest, //E
+            //F
+            //G
+            "autXML"                => $this->autXML, //GA
+            "prod"                  => $this->prod, //H a V
+            "total"                 => [ //W
+                "ICMSTot"           => [ //W
                     "vBC"           => $this->ICMSTot_vBC->result(),
                     "vICMS"         => $this->ICMSTot_vICMS->result(),
                     "vICMSDeson"    => $this->ICMSTot_vICMSDeson->result(),
@@ -223,7 +229,7 @@ class NFe
                     "vNF"           => $this->ICMSTot_vNF->result(),
                     "vTotTrib"      => $this->ICMSTot_vTotTrib->result()
                 ],
-                "ISSQNtot"          => [
+                "ISSQNtot"          => [ //W01
                     "vServ"         => $this->ISSQNtot_vServ->result(),
                     "vBC"           => $this->ISSQNtot_vBC->result(),
                     "vISS"          => $this->ISSQNtot_vISS->result(),
@@ -237,7 +243,7 @@ class NFe
                     "vISSRet"       => $this->ISSQNtot_vISSRet->result(),
                     "cRegTrib"      => $this->ISSQNtot_cRegTrib
                 ],
-                "retTrib"           => [
+                "retTrib"           => [ //W02
                     "vRetPIS"       => $this->retTrib_vRetPIS->result(),
                     "vRetCOFINS"    => $this->retTrib_vRetCOFINS->result(),
                     "vRetCSLL"      => $this->retTrib_vRetCSLL->result(),
@@ -247,8 +253,15 @@ class NFe
                     "vRetPrev"      => $this->retTrib_vRetPrev->result()
                 ]
             ],
-            "detPag"    => $this->detPag,
-            "vTroco"    => $this->vTroco
+            //X
+            //Y
+            "detPag"    => $this->detPag, //YA
+            "vTroco"    => $this->vTroco //YA
+            //YB
+            //Z
+            //ZA
+            //ZB
+            //ZC
         ]);
     }
 
@@ -450,14 +463,16 @@ class NFe
 
         //ICMSTot_vNF
         $this->ICMSTot_vNF
-        ->sum($prod->vProd ?? "0")
-        ->sub($prod->vDesc ?? "0")
-        ->sub($icms->vICMSDeson ?? "0")
-        ->sum($icms->vBCST ?? "0")
-        ->sum($prod->vFrete ?? "0")
-        ->sum($prod->vSeg ?? "0")
-        ->sum($prod->vOutro ?? "0");
-        //+ valor_total_ii + valor_ipi + valor_total_servicos
+        ->sum($prod->vProd ?? "0");
+        // ->sub($prod->vDesc ?? "0")
+        // ->sub($icms->vICMSDeson ?? "0")
+        // ->sum($icms->vBCST ?? "0")
+        // ->sum($prod->vFrete ?? "0")
+        // ->sum($prod->vSeg ?? "0")
+        // ->sum($prod->vOutro ?? "0");
+        // ->sum($prod->vII ?? "0")
+        // ->sum($prod->vIPI ?? "0")
+        // ->sum($prod->vServ ?? "0");
 
         // // //ICMSTot_vTotTrib
         // // //ISSQNtot_vServ
@@ -479,9 +494,6 @@ class NFe
         // // //retTrib_vIRRF
         // // //retTrib_vBCRetPrev
         // // //retTrib_vRetPrev
-
-        // vNF = valor_produtos – valor_desconto – icms_valor_total_desonerado + icms_valor_total_st
-        // + valor_frete + valor_seguro + valor_outras_despesas + valor_total_ii + valor_ipi + valor_total_servicos
     }
 
     private function setDetPag(DetPag $detPag): void
@@ -495,6 +507,11 @@ class NFe
             'tBand'     => $detPag->tBand,
             'cAut'      => $detPag->cAut,
         ]);
+    }
+
+    private function setAutXML(AutXML $autXML): void
+    {
+        $this->autXML = $autXML->autXML;
     }
 
     private function calc(): void
@@ -536,11 +553,17 @@ class NFe
 
         if ($this->vDesc) {
             $vDescRest = new Decimal($this->vDesc, 2);
+            $desc = 0;
             foreach ($this->prod as $key => $prod) {
                 $vDesc = new Decimal("0", 2);
                 $mul = $vDesc->sum($prod['vProd'] ?? '0')->mul($this->vDesc);
                 $mul->div($this->vProd->result());
                 $this->prod[$key]['vDesc'] = $mul->result();
+                $desc = $desc + $this->prod[$key]['vDesc'];
+                if ($key + 1 == count($this->prod)) {
+                    $calc = (new Decimal((string)$desc, 2))->sub($this->vDesc)->result();
+                    $this->prod[$key]['vDesc'] = $mul->sub($calc)->result();
+                }
                 $vDescRest->sub($mul->result());
                 $this->ICMSTot_vNF->sub($mul->result() ?? "0");
             }
@@ -591,8 +614,61 @@ class NFe
         $this->ICMSTot_vOutro->sum($this->vOutro);
     }
 
+    private function setIde(Ide $ide): void
+    {
+        $this->ide = [
+            'cUF'           => $ide->cUF ?? null,
+            'cNF'           => $ide->cNF ?? null,
+            'natOp'         => $ide->natOp ?? null,
+            'mod'           => $ide->mod ?? null,
+            'serie'         => $ide->serie ?? null,
+            'nNF'           => $ide->nNF ?? null,
+            'dhEmi'         => $ide->dhEmi ?? null,
+            'dhSaiEnt'      => $ide->dhSaiEnt ?? null,
+            'tpNF'          => $ide->tpNF ?? null,
+            'idDest'        => $ide->idDest ?? null,
+            'cMunFG'        => $ide->cMunFG ?? null,
+            'tpImp'         => $ide->tpImp ?? null,
+            'tpEmis'        => $ide->tpEmis ?? null,
+            'cDV'           => $ide->cDV ?? null,
+            'tpAmb'         => $ide->tpAmb ?? null,
+            'finNFe'        => $ide->finNFe ?? null,
+            'indFinal'      => $ide->indFinal ?? null,
+            'indPres'       => $ide->indPres ?? null,
+            'indIntermed'   => $ide->indIntermed ?? null,
+            'dhCont'        => $ide->dhCont ?? null,
+            'xJust'         => $ide->xJust ?? null
+        ];
+    }
+
     private function setProd(): void
     {
+    }
+
+    private function setEmit(Emit $emit): void
+    {
+        $this->emit = [
+            'CNPJ'          => $emit->CNPJ ?? null,
+            'CPF'           => $emit->CPF ?? null,
+            'xNome'         => $emit->xNome ?? null,
+            'xFant'         => $emit->xFant ?? null,
+            'xLgr'          => $emit->xLgr ?? null,
+            'nro'           => $emit->nro ?? null,
+            'xCpl'          => $emit->xCpl ?? null,
+            'xBairro'       => $emit->xBairro ?? null,
+            'cMun'          => $emit->cMun ?? null,
+            'xMun'          => $emit->xMun ?? null,
+            'UF'            => $emit->UF ?? null,
+            'CEP'           => $emit->CEP ?? null,
+            'cPais'         => $emit->cPais ?? null,
+            'xPais'         => $emit->xPais ?? null,
+            'fone'          => $emit->fone ?? null,
+            'IE'            => $emit->IE ?? null,
+            'IEST'          => $emit->IEST ?? null,
+            'IM'            => $emit->IM ?? null,
+            'CNAE'          => $emit->CNAE ?? null,
+            'CRT'           => $emit->CRT ?? null
+        ];
     }
 
     private function setDest(Dest $dest): void
